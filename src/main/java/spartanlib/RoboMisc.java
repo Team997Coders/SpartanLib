@@ -22,4 +22,8 @@ public class RoboMisc {
         }
     }
 
+    public static String testFunction() {
+        return "Test Successful";
+    }
+
 }

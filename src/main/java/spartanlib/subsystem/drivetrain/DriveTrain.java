@@ -7,13 +7,18 @@ public abstract class DriveTrain extends Subsystem {
 
     private Command defaultCommand;
 
-    public DriveTrain(Command defaultCommand) {
-        this.defaultCommand = defaultCommand;
+    public DriveTrain() {
+    }
+
+    public void newDefaultCommand(Command com) {
+        defaultCommand = com;
+        initDefaultCommand();
     }
 
     @Override
     public void initDefaultCommand() {
         if (defaultCommand != null) {
+            System.out.println("Setting Default Command");
             setDefaultCommand(defaultCommand);
         }
     }

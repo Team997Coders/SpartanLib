@@ -15,12 +15,8 @@ public class TankDrive extends DriveTrain {
     private TalonSRX leftTalon, rightTalon;
     private VictorSPX leftVictor1, leftVictor2, rightVictor1, rightVictor2;
 
-    private Command defaultCommand;
-
     public TankDrive(int talonLeft, int talonRight,
-    int victorLeft1, int victorLeft2, int victorRight1, int victorRight2, Command defaultCommand) {
-
-        super(defaultCommand);
+    int victorLeft1, int victorLeft2, int victorRight1, int victorRight2) {
 
         leftBox = BlackHole.standTalonSRXSetup(talonLeft, victorLeft1, victorLeft2, false);
         rightBox = BlackHole.standTalonSRXSetup(talonRight, victorRight1, victorRight2, true);
@@ -51,13 +47,6 @@ public class TankDrive extends DriveTrain {
     public void stopVoltage() {
         leftTalon.set(ControlMode.PercentOutput, 0);
         rightTalon.set(ControlMode.PercentOutput, 0);
-    }
-
-    public void initDefaultCommand() {
-        if (defaultCommand != null) {
-            setDefaultCommand(defaultCommand);
-        }
-        //setDefaultCommand(new TankDrive());
     }
 
 }
