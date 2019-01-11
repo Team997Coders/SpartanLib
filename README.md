@@ -17,3 +17,4 @@ compileOnly dependency configuration where referencing wpi artifacts.
 ## ToDos
 
 1. Create a fat jar builder task to bundle all libraries into one jar for root project.
+2. Add jitpack.io bits so that artifacts from this library can be referenced easily from external robot programs.
