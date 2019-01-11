@@ -1,13 +1,8 @@
-package spartanlib.subsystem.drivetrain;
+package org.team997coders.spartanlib.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import spartanlib.BlackHole;
-import spartanlib.GearBox;
 
 public class TankDrive extends DriveTrain {
 

@@ -1,4 +1,4 @@
-package spartanlib;
+package org.team997coders.spartanlib.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;

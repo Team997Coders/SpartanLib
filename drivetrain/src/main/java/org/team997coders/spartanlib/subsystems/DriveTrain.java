@@ -1,4 +1,4 @@
-package spartanlib.subsystem.drivetrain;
+package org.team997coders.spartanlib.subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;

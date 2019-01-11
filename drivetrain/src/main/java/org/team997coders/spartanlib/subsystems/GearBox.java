@@ -1,4 +1,4 @@
-package spartanlib;
+package org.team997coders.spartanlib.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
