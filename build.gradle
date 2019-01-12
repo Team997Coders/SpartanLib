@@ -1,14 +1,61 @@
 plugins {
   id 'java-library'
+  id 'maven'
 }
+
+def allBaseName = "spartanlib-all"
+
+// See https://jitpack.io/docs/BUILDING/
+group = 'com.github.team997coders'
 
 // Modify the jar task to combine all subproject classes into one jar
 subprojects.each { subproject -> evaluationDependsOn( subproject.path ) }
 jar.dependsOn subprojects.tasks['classes']
 jar {
-  baseName = 'spartanlib-all'
+  baseName = allBaseName
   subprojects.each { subproject ->
     from subproject.sourceSets.main.output.classesDirs
     from subproject.sourceSets.main.output.resourcesDir
+  }
+}
+
+task sourcesJar(type: Jar, dependsOn: subprojects.tasks['classes']) {
+  baseName = allBaseName
+  classifier = 'sources'
+  subprojects.each { subproject -> 
+    from subproject.sourceSets.main.allSource
+  }
+}
+
+javadoc.dependsOn subprojects.tasks['classes']
+javadoc {
+  source = subprojects.collect { it.sourceSets.main.allSource }
+  options.linkSource true
+  failOnError false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    baseName = allBaseName
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+install {
+  repositories.mavenInstaller {
+    pom.project {
+      licenses {
+        license {
+          name 'GNU General Public License, version 3'
+          url 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+          distribution 'repo'
+          comments 'By using or conveying this work, you agree to hold harmless Spartan Robotics, FRC Team 997, Corvallis High School, Corvallis School District, OR and any contributing volunteer for any risk of use.'
+        }
+      }
+    }
   }
 }
