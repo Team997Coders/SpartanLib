@@ -99,6 +99,7 @@ public class CameraMountUnitTest {
     // Assert
     assertEquals(120, cameraMount.getTiltAngleInDegrees());
     verify(tiltServoMock, times(1)).write(cameraMount.getTiltAngleInDegrees());
+    cameraMount.close();
   }
 
   @Test
@@ -114,5 +115,6 @@ public class CameraMountUnitTest {
     // Assert
     assertEquals(120, cameraMount.getPanAngleInDegrees());
     verify(panServoMock, times(1)).write(cameraMount.getPanAngleInDegrees());
+    cameraMount.close();
   }
 }
