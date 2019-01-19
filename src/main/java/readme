@@ -1,0 +1,5 @@
+This is the root of the SpartanLib. Do not put code here. Create a subproject if your
+addition is new or make mods to existing subprojects if you are adding enhancements.
+
+Running the `./gradlew jar` task produces a consolidated jar of all classes generated
+from each subproject.

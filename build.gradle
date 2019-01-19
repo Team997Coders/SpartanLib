@@ -1,67 +1,61 @@
 plugins {
-    id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.1.1"
+  id 'java-library'
+  id 'maven'
 }
 
-//def ROBOT_MAIN_CLASS = "frc.robot.Main"
+def allBaseName = "spartanlib-all"
 
-// Define my targets (RoboRIO) and artifacts (deployable files)
-// This is added by GradleRIO's backing project EmbeddedTools.
-/*deploy {
-    targets {
-        roboRIO("roborio") {
-            // Team number is loaded either from the .wpilib/wpilib_preferences.json
-            // or from command line. If not found an exception will be thrown.
-            // You can use getTeamOrDefault(team) instead of getTeamNumber if you
-            // want to store a team number in this file.
-            team = frc.getTeamNumber()
-        }
-    }
-    artifacts {
-        frcJavaArtifact('frcJava') {
-            targets << "roborio"
-            // Debug can be overridden by command line, for use with VSCode
-            debug = frc.getDebugOrDefault(false)
-        }
-        // Built in artifact to deploy arbitrary files to the roboRIO.
-        fileTreeArtifact('frcStaticFileDeploy') {
-            // The directory below is the local directory to deploy
-            files = fileTree(dir: 'src/main/deploy')
-            // Deploy to RoboRIO target, into /home/lvuser/deploy
-            targets << "roborio"
-            directory = '/home/lvuser/deploy'
-        }
-    }
-}*/
+// See https://jitpack.io/docs/BUILDING/
+group = 'com.github.team997coders'
 
-// Set this to true to enable desktop support.
-def includeDesktopSupport = false
-
-// Maven central needed for JUnit
-repositories {
-    mavenCentral()
-}
-
-// Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
-// Also defines JUnit 4.
-dependencies {
-    compile wpi.deps.wpilib()
-    compile wpi.deps.vendor.java()
-    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
-    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-    testCompile 'junit:junit:4.12'
-}
-
-version = '1.0.0'
-
-// Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
-// in order to make them all available at runtime. Also adding the manifest so WPILib
-// knows where to look for our Robot Class.
+// Modify the jar task to combine all subproject classes into one jar
+subprojects.each { subproject -> evaluationDependsOn( subproject.path ) }
+jar.dependsOn subprojects.tasks['classes']
 jar {
-    //from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    //manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
-    manifest {
-        attributes('Implementation-Title': project.name,
-                    'Implementation-Version': project.version)
+  baseName = allBaseName
+  subprojects.each { subproject ->
+    from subproject.sourceSets.main.output.classesDirs
+    from subproject.sourceSets.main.output.resourcesDir
+  }
+}
+
+task sourcesJar(type: Jar, dependsOn: subprojects.tasks['classes']) {
+  baseName = allBaseName
+  classifier = 'sources'
+  subprojects.each { subproject -> 
+    from subproject.sourceSets.main.allSource
+  }
+}
+
+javadoc.dependsOn subprojects.tasks['classes']
+javadoc {
+  source = subprojects.collect { it.sourceSets.main.allSource }
+  options.linkSource true
+  failOnError false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    baseName = allBaseName
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+install {
+  repositories.mavenInstaller {
+    pom.project {
+      licenses {
+        license {
+          name 'GNU General Public License, version 3'
+          url 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+          distribution 'repo'
+          comments 'By using or conveying this work, you agree to hold harmless Spartan Robotics, FRC Team 997, Corvallis High School, Corvallis School District, OR and any contributing volunteer for any risk of use.'
+        }
+      }
     }
+  }
 }
