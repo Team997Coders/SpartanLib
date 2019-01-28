@@ -91,15 +91,15 @@ public class CameraMountUnitTest {
     // Assemble
     IServo panServoMock = mock(IServo.class);
     IServo tiltServoMock = mock(IServo.class);
-    CameraMount cameraMount = new CameraMount(panServoMock, tiltServoMock, 10, 180, 100, 150);
+    try(CameraMount cameraMount = new CameraMount(panServoMock, tiltServoMock, 10, 180, 100, 150)) {
 
-    // Act
-    cameraMount.tiltToAngle(120);
+      // Act
+      cameraMount.tiltToAngle(120);
 
-    // Assert
-    assertEquals(120, cameraMount.getTiltAngleInDegrees());
-    verify(tiltServoMock, times(1)).write(cameraMount.getTiltAngleInDegrees());
-    cameraMount.close();
+      // Assert
+      assertEquals(120, cameraMount.getRoundedTiltAngleInDegrees());
+      verify(tiltServoMock, times(1)).write(cameraMount.getRoundedTiltAngleInDegrees());
+    }
   }
 
   @Test
@@ -107,14 +107,14 @@ public class CameraMountUnitTest {
     // Assemble
     IServo panServoMock = mock(IServo.class);
     IServo tiltServoMock = mock(IServo.class);
-    CameraMount cameraMount = new CameraMount(panServoMock, tiltServoMock, 10, 180, 100, 150);
+    try(CameraMount cameraMount = new CameraMount(panServoMock, tiltServoMock, 10, 180, 100, 150)) {
 
-    // Act
-    cameraMount.panToAngle(120);
+      // Act
+      cameraMount.panToAngle(120);
 
-    // Assert
-    assertEquals(120, cameraMount.getPanAngleInDegrees());
-    verify(panServoMock, times(1)).write(cameraMount.getPanAngleInDegrees());
-    cameraMount.close();
+      // Assert
+      assertEquals(120, cameraMount.getRoundedPanAngleInDegrees());
+      verify(panServoMock, times(1)).write(cameraMount.getRoundedPanAngleInDegrees());
+    }
   }
 }

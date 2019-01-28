@@ -1,3 +1,13 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.test.config": [
+    {
+        "name": "mustHaveJNIs",
+        "workingDirectory": "${workspaceFolder}",
+        "args": [ ],
+        "vmargs": [ "-Xmx512M"  ],
+        "env": { "PATH":"cameramount/build/tmp/jniExtractDir"},
+    }
+  ],
+  "java.test.defaultConfig": "mustHaveJNIs"
 }

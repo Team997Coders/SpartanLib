@@ -80,8 +80,8 @@ public class SlewCamera extends Command {
   protected void execute() {
     double panAngle = cameraMount.getPanAngleInDegrees() + (this.maxDegreesPerHeartbeat * panRateProvider.getValue());
     double tiltAngle = cameraMount.getTiltAngleInDegrees() + (this.maxDegreesPerHeartbeat * tiltRateProvider.getValue());
-    cameraMount.panToAngle((int) Math.round(panAngle));
-    cameraMount.tiltToAngle((int) Math.round(tiltAngle));
+    cameraMount.panToAngle(panAngle);
+    cameraMount.tiltToAngle(tiltAngle);
   }
 
   /**

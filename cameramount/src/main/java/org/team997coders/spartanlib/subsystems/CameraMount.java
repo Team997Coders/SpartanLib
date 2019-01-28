@@ -14,8 +14,8 @@ public class CameraMount extends Subsystem {
   private final int tiltUpperLimitInDegrees; 
   private final int panLowerLimitInDegrees;
   private final int panUpperLimitInDegrees;
-  private int panAngleInDegrees;
-  private int tiltAngleInDegrees;
+  private double panAngleInDegrees;
+  private double tiltAngleInDegrees;
 
   /**
    * Construct a camera mount with angle limits set to 0..180 degrees.
@@ -59,15 +59,16 @@ public class CameraMount extends Subsystem {
    * 
    * @param angleInDegrees
    */
-  public void panToAngle (int angleInDegrees) {
-    if (angleInDegrees >= panUpperLimitInDegrees) {
+  public void panToAngle (double angleInDegrees) {
+    int roundedAngleInDegrees = (int) Math.round(angleInDegrees);
+    if (roundedAngleInDegrees >= panUpperLimitInDegrees) {
       panServo.write(panUpperLimitInDegrees);
       panAngleInDegrees = panUpperLimitInDegrees;
-    } else if (angleInDegrees <= panLowerLimitInDegrees) {
+    } else if (roundedAngleInDegrees <= panLowerLimitInDegrees) {
       panServo.write(panLowerLimitInDegrees);
       panAngleInDegrees = panLowerLimitInDegrees;
     } else {
-      panServo.write(angleInDegrees);
+      panServo.write(roundedAngleInDegrees);
       panAngleInDegrees = angleInDegrees;
     }
   }
@@ -77,17 +78,40 @@ public class CameraMount extends Subsystem {
    * 
    * @param angleInDegrees
    */
-  public void tiltToAngle (int angleInDegrees) {
-    if (angleInDegrees >= tiltUpperLimitInDegrees) {
+  public void tiltToAngle (double angleInDegrees) {
+    int roundedAngleInDegrees = (int) Math.round(angleInDegrees);
+    if (roundedAngleInDegrees >= tiltUpperLimitInDegrees) {
       tiltServo.write(tiltUpperLimitInDegrees);
       tiltAngleInDegrees = tiltUpperLimitInDegrees;
-    } else if (angleInDegrees <= tiltLowerLimitInDegrees) {
+    } else if (roundedAngleInDegrees <= tiltLowerLimitInDegrees) {
       tiltServo.write(tiltLowerLimitInDegrees);
       tiltAngleInDegrees = tiltLowerLimitInDegrees;
     } else {
-      tiltServo.write(angleInDegrees);
+      tiltServo.write(roundedAngleInDegrees);
       tiltAngleInDegrees = angleInDegrees;
     }
+  }
+
+  /**
+   * Get the last set tilt angle. Note that hardware
+   * positions are set based on integers and so this angle
+   * is rounded before it is set.
+   * 
+   * @return  Tilt angle in degrees
+   */
+  public double getTiltAngleInDegrees() {
+    return tiltAngleInDegrees;
+  }
+
+  /**
+   * Get the last set pan angle. Note that hardware
+   * positions are set based on integers and so this angle
+   * is rounded before it is set.
+   * 
+   * @return  Pan angle in degrees
+   */
+  public double getPanAngleInDegrees() {
+    return panAngleInDegrees;
   }
 
   /**
@@ -95,17 +119,17 @@ public class CameraMount extends Subsystem {
    * 
    * @return  Tilt angle in degrees
    */
-  public int getTiltAngleInDegrees() {
-    return tiltAngleInDegrees;
+  public int getRoundedTiltAngleInDegrees() {
+    return (int) Math.round(tiltAngleInDegrees);
   }
 
   /**
-   * Get the last set pan angle
+   * Get the last set tilt angle
    * 
-   * @return  Pan angle in degrees
+   * @return  Tilt angle in degrees
    */
-  public int getPanAngleInDegrees() {
-    return panAngleInDegrees;
+  public int getRoundedPanAngleInDegrees() {
+    return (int) Math.round(panAngleInDegrees);
   }
 
   /**
@@ -114,7 +138,7 @@ public class CameraMount extends Subsystem {
    * @return  True if at a limit
    */
   public boolean atPanLimit() {
-    return getPanAngleInDegrees() == panLowerLimitInDegrees || getPanAngleInDegrees() == panUpperLimitInDegrees;
+    return getRoundedPanAngleInDegrees() == panLowerLimitInDegrees || getRoundedPanAngleInDegrees() == panUpperLimitInDegrees;
   }
 
   /**
@@ -123,6 +147,6 @@ public class CameraMount extends Subsystem {
    * @return  True if at a limit
    */
   public boolean atTiltLimit() {
-    return getTiltAngleInDegrees() == tiltLowerLimitInDegrees || getTiltAngleInDegrees() == tiltUpperLimitInDegrees;
+    return getRoundedTiltAngleInDegrees() == tiltLowerLimitInDegrees || getRoundedTiltAngleInDegrees() == tiltUpperLimitInDegrees;
   }
 }

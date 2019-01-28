@@ -73,18 +73,18 @@ public class SlewCameraToAngle extends Command {
    * heartbeatRateInMs but should be verified with driving scheduler.
    */
   protected void execute() {
-    int nextPanAngle =(int) Math.round(cameraMount.getPanAngleInDegrees() + this.maxDegreesPerHeartbeat);
-    int nextTiltAngle = (int) Math.round(cameraMount.getTiltAngleInDegrees() + this.maxDegreesPerHeartbeat);
-    cameraMount.panToAngle(nextPanAngle > this.panAngle ? this.panAngle : nextPanAngle);
-    cameraMount.tiltToAngle(nextTiltAngle > this.tiltAngle ? this.tiltAngle : nextTiltAngle);
+    double nextPanAngle = cameraMount.getPanAngleInDegrees() + this.maxDegreesPerHeartbeat;
+    double nextTiltAngle = cameraMount.getTiltAngleInDegrees() + this.maxDegreesPerHeartbeat;
+    cameraMount.panToAngle(Math.round(nextPanAngle) > this.panAngle ? this.panAngle : nextPanAngle);
+    cameraMount.tiltToAngle(Math.round(nextTiltAngle) > this.tiltAngle ? this.tiltAngle : nextTiltAngle);
   }
 
   /**
    * Finished when angles are reached or subsystem is at travel limits.
    */
   protected boolean isFinished() {
-    if ((cameraMount.getPanAngleInDegrees() == this.panAngle || cameraMount.atPanLimit()) && 
-        cameraMount.getTiltAngleInDegrees() == this.tiltAngle || cameraMount.atTiltLimit()) {
+    if ((cameraMount.getRoundedPanAngleInDegrees() == this.panAngle || cameraMount.atPanLimit()) && 
+        cameraMount.getRoundedTiltAngleInDegrees() == this.tiltAngle || cameraMount.atTiltLimit()) {
       return true;
     } else {
       return false;
