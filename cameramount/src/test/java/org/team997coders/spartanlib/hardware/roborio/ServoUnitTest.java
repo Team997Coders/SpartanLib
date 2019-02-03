@@ -105,4 +105,16 @@ public class ServoUnitTest {
     // Act
     servo.write(-1);
   }
+
+  @Test
+  public void itSetsPWMLimitsUponConstruction() {
+    // Assemble
+    edu.wpi.first.wpilibj.Servo wpiServoMock = mock(edu.wpi.first.wpilibj.Servo.class);
+
+    // Act
+    Servo servo = new Servo(wpiServoMock, 544, 2333);
+
+    //Assert
+    verify(wpiServoMock, times(1)).setBounds(2.333, 0, 0, 0, 0.544);
+  }
 }

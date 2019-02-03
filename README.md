@@ -9,12 +9,10 @@ compileOnly dependency configuration where referencing wpi artifacts.
 
 1. All packages that provide things should be pluralized.  For example, use subsystems vs. subsystem.
 
-## Questions
-
-1. I used the root package of org.team997coders.spartanlib. It seems like we should be prefixing with our organization name.
-2. While with this setup we now have clean deliniation of sub-projects, I did not further subdivide the namespace for subsystems, etc. Do we want this?
-
 ## ToDos
 
 1. ~~Create a fat jar builder task to bundle all libraries into one jar for root project.~~
 2. ~~Add jitpack.io bits so that artifacts from this library can be referenced easily from external robot programs.~~
+
+[![Release](https://jitpack.io/v/User/Repo.svg)]
+(https://jitpack.io/#User/Repo)

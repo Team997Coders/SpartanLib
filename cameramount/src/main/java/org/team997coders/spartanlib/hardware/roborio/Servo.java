@@ -24,6 +24,29 @@ public class Servo implements IServo {
   }
 
   /**
+   * Create a new servo and specify the max and min PWM pulse widths in microseconds.
+   * @param pinArg        The PWM channel to which the servo is attached. 0-9 are on-board. 10-19 are on the MXP port.
+   * @param minPulseInuS  Minimum pulse width in microseconds
+   * @param maxPulseInuS  Maximum pulse width in microseconds
+   */
+  public Servo(int pinArg, int minPulseInuS, int maxPulseInuS) {
+    this(new edu.wpi.first.wpilibj.Servo(pinArg), minPulseInuS, maxPulseInuS);
+  }
+
+  /**
+   * Create a new servo, taking in an already instantiated servo object, setting pulse limits.
+   * @param wpiServo      A wpilibj Servo.
+   * @param minPulseInuS  Minimum pulse width in microseconds
+   * @param maxPulseInuS  Maximum pulse width in microseconds
+   */
+  public Servo(edu.wpi.first.wpilibj.Servo wpiServo, int minPulseInuS, int maxPulseInuS) {
+    this(wpiServo);
+    double max = (double)maxPulseInuS * 0.001;
+    double min = (double)minPulseInuS * 0.001;
+    wpiServo.setBounds(max, 0, 0, 0, min);
+  }
+
+  /**
    * Create a new servo. Take in an already instantiated wpilibj Servo (for testing purposes).
    * 
    * @param wpiServo  A wpilibj Servo.
