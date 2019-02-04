@@ -14,5 +14,4 @@ compileOnly dependency configuration where referencing wpi artifacts.
 1. ~~Create a fat jar builder task to bundle all libraries into one jar for root project.~~
 2. ~~Add jitpack.io bits so that artifacts from this library can be referenced easily from external robot programs.~~
 
-[![Release](https://jitpack.io/v/User/Repo.svg)]
-(https://jitpack.io/#User/Repo)
+[![](https://jitpack.io/v/Team997Coders/SpartanLib.svg)](https://jitpack.io/#Team997Coders/SpartanLib)
