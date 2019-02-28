@@ -16,9 +16,11 @@ public class CameraMount extends Subsystem {
   private final int panUpperLimitInDegrees;
   private double panAngleInDegrees;
   private double tiltAngleInDegrees;
+  private final boolean reverseTilt;
+  private final boolean reversePan;
 
   /**
-   * Construct a camera mount with angle limits set to 0..180 degrees.
+   * Construct a non-reversed camera mount with angle limits set to 0..180 degrees.
    * 
    * @param panServo    An interface to a Servo for panning
    * @param tiltServo   An interface to a Servo for tilting
@@ -28,7 +30,7 @@ public class CameraMount extends Subsystem {
   }
 
   /**
-   * Construct a camera mount specifing limits of travel in degrees.
+   * Construct a non-reversed camera mount specifing limits of travel in degrees.
    * 
    * @param panServo                  An interface to a Servo for panning
    * @param tiltServo                 An interface to a Servo for tilting
@@ -43,13 +45,56 @@ public class CameraMount extends Subsystem {
       int tiltUpperLimitInDegrees, 
       int panLowerLimitInDegrees,
       int panUpperLimitInDegrees) {
+    this(panServo, 
+      tiltServo, 
+      tiltLowerLimitInDegrees, 
+      tiltUpperLimitInDegrees, 
+      false, 
+      panLowerLimitInDegrees, 
+      panUpperLimitInDegrees, 
+      false);
+  }
+
+  /**
+   * Construct a camera mount specifing limits of travel in degrees with the
+   * ability to reverse 0 to 180 servo travel direction.
+   * 
+   * @param panServo                  An interface to a Servo for panning
+   * @param tiltServo                 An interface to a Servo for tilting
+   * @param tiltLowerLimitInDegrees   The lower tilt limit angle in degrees
+   * @param tiltUpperLimitInDegrees   The upper tilt limit angle in degrees
+   * @param reverseTilt               Flip the 0 to 180 direction of the tilt servo.
+   * @param panLowerLimitInDegrees    The lower pan limit angle in degrees
+   * @param panUpperLimitInDegrees    The upper pan limit angle in degrees
+   * @param reversePan                Flip the 0 to 180 direction of the pan servo.
+   */
+  public CameraMount(IServo panServo, 
+      IServo tiltServo, 
+      int tiltLowerLimitInDegrees, 
+      int tiltUpperLimitInDegrees, 
+      boolean reverseTilt,
+      int panLowerLimitInDegrees,
+      int panUpperLimitInDegrees,
+      boolean reversePan) {
     super("CameraMount");
     this.panServo = panServo;
     this.tiltServo = tiltServo;
-    this.tiltLowerLimitInDegrees = tiltLowerLimitInDegrees;
-    this.tiltUpperLimitInDegrees = tiltUpperLimitInDegrees;
-    this.panLowerLimitInDegrees = panLowerLimitInDegrees;
-    this.panUpperLimitInDegrees = panUpperLimitInDegrees;
+    this.reverseTilt = reverseTilt;
+    if (reverseTilt) {
+      this.tiltUpperLimitInDegrees = 180 - tiltLowerLimitInDegrees;
+      this.tiltLowerLimitInDegrees = 180 - tiltUpperLimitInDegrees;
+    } else {
+      this.tiltLowerLimitInDegrees = tiltLowerLimitInDegrees;
+      this.tiltUpperLimitInDegrees = tiltUpperLimitInDegrees;
+    }
+    this.reversePan = reversePan;
+    if (reversePan) {
+      this.panUpperLimitInDegrees = 180 - panLowerLimitInDegrees;
+      this.panLowerLimitInDegrees = 180 - panUpperLimitInDegrees;
+    } else {
+      this.panLowerLimitInDegrees = panLowerLimitInDegrees;
+      this.panUpperLimitInDegrees = panUpperLimitInDegrees;
+    }
   }
 
   protected void initDefaultCommand() {}
@@ -60,7 +105,15 @@ public class CameraMount extends Subsystem {
    * @param angleInDegrees
    */
   public void panToAngle (double angleInDegrees) {
-    int roundedAngleInDegrees = (int) Math.round(angleInDegrees);
+    int roundedAngleInDegrees;
+    // If the servo is "reversed", simply flip the 0 to 180
+    // direction, but do not cause the consumer to worry about
+    // whether the servo is left to right or right to left.
+    if (reversePan) {
+      roundedAngleInDegrees = (int) Math.round(180D - angleInDegrees);
+    } else {
+      roundedAngleInDegrees = (int) Math.round(angleInDegrees);
+    }
     if (roundedAngleInDegrees >= panUpperLimitInDegrees) {
       panServo.write(panUpperLimitInDegrees);
       panAngleInDegrees = panUpperLimitInDegrees;
@@ -79,7 +132,12 @@ public class CameraMount extends Subsystem {
    * @param angleInDegrees
    */
   public void tiltToAngle (double angleInDegrees) {
-    int roundedAngleInDegrees = (int) Math.round(angleInDegrees);
+    int roundedAngleInDegrees;
+    if (reverseTilt) {
+      roundedAngleInDegrees = (int) Math.round(180D - angleInDegrees);
+    } else {
+      roundedAngleInDegrees = (int) Math.round(angleInDegrees);
+    }
     if (roundedAngleInDegrees >= tiltUpperLimitInDegrees) {
       tiltServo.write(tiltUpperLimitInDegrees);
       tiltAngleInDegrees = tiltUpperLimitInDegrees;
@@ -138,7 +196,7 @@ public class CameraMount extends Subsystem {
    * @return  True if at a limit
    */
   public boolean atPanLimit() {
-    return getRoundedPanAngleInDegrees() == panLowerLimitInDegrees || getRoundedPanAngleInDegrees() == panUpperLimitInDegrees;
+    return getRoundedPanAngleInDegrees() <= panLowerLimitInDegrees || getRoundedPanAngleInDegrees() >= panUpperLimitInDegrees;
   }
 
   /**
@@ -147,6 +205,6 @@ public class CameraMount extends Subsystem {
    * @return  True if at a limit
    */
   public boolean atTiltLimit() {
-    return getRoundedTiltAngleInDegrees() == tiltLowerLimitInDegrees || getRoundedTiltAngleInDegrees() == tiltUpperLimitInDegrees;
+    return getRoundedTiltAngleInDegrees() <= tiltLowerLimitInDegrees || getRoundedTiltAngleInDegrees() >= tiltUpperLimitInDegrees;
   }
 }

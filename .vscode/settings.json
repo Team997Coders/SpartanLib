@@ -6,7 +6,7 @@
         "workingDirectory": "${workspaceFolder}",
         "args": [ ],
         "vmargs": [ "-Xmx512M"  ],
-        "env": { "PATH":"cameramount/build/tmp/jniExtractDir"},
+        "env": { "PATH":"${workspaceFolder}/cameramount/build/tmp/jniExtractDir"},
     }
   ],
   "java.test.defaultConfig": "mustHaveJNIs"
