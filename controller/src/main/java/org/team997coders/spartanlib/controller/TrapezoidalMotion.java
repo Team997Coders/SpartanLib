@@ -33,11 +33,11 @@ public class TrapezoidalMotion {
   }
 
   public double getPosition(double time) {
-    if (time < 0) {
-      return distance;
-    } else if (time > (timeToSlow * 2) + timeToCruise) {
-      return 0;
-    }
+    // if (time < 0) {
+    //   return distance;
+    // } else if (time > (timeToSlow * 2) + timeToCruise) {
+    //   return 0;
+    // }
 
     double sum = 0;
 
@@ -57,6 +57,22 @@ public class TrapezoidalMotion {
     return sum;
   }
 
+  public double getVelocity(double time) {
+    double sum = 0;
+
+    if (time > (timeToSlow * 2) + timeToCruise) {
+      return 0;
+    } else if (time > timeToSlow + timeToCruise) {
+      sum += (-accel * (time - (timeToSlow + timeToCruise))) + (accel * timeToSlow);
+    } else if (time > timeToSlow) {
+      sum += accel * timeToSlow;
+    } else if (time > 0) {
+      sum += accel * time;
+    }
+
+    return sum;
+  }
+
   private double getDistanceAccel(double t) {
     return accel * 0.5 * t * t;
   }
@@ -67,7 +83,7 @@ public class TrapezoidalMotion {
     return h;
   }
 
-  public double getDistanceCruise(double t) {
+  private double getDistanceCruise(double t) {
     return (accel * timeToSlow) * t;
   }
 
@@ -75,5 +91,9 @@ public class TrapezoidalMotion {
     double x = (-b + Math.sqrt((b * b) + (-4 * a * c))) / (2 * a);
     return x;
   }
+
+  public double getAccelTime() { return timeToSlow; }
+
+  public double getCruiseTime() { return timeToCruise; }
 
 }
