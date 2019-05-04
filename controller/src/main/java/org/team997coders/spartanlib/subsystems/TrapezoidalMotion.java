@@ -1,4 +1,4 @@
-package org.team997coders.spartanlib.controller;
+package org.team997coders.spartanlib.subsystems;
 
 public class TrapezoidalMotion {
 
