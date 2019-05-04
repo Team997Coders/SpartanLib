@@ -54,7 +54,7 @@ public class TrapezoidalMotion {
       sum += getDistanceAccel(time);
     }
 
-    return sum;
+    return round(sum, 4);
   }
 
   public double getVelocity(double time) {
@@ -70,7 +70,14 @@ public class TrapezoidalMotion {
       sum += accel * time;
     }
 
-    return sum;
+    return round(sum, 4);
+  }
+
+  // sig figs from the ones place
+  private double round(double val, int sigFigs) {
+    int a = (int)Math.round(val * Math.pow(10, sigFigs));
+
+    return (double)(a / Math.pow(10, sigFigs));
   }
 
   private double getDistanceAccel(double t) {
