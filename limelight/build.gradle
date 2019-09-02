@@ -1,0 +1,18 @@
+plugins {
+    id "java-library"
+    id "edu.wpi.first.GradleRIO" version "2019.4.1"
+}
+
+// Maven central needed for JUnit
+repositories {
+    mavenCentral()
+}
+
+// Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
+// Also defines JUnit 4.
+dependencies {
+    compileOnly wpi.deps.wpilib()
+    compileOnly wpi.deps.vendor.java()
+    testCompile wpi.deps.wpilib()
+    testCompile 'junit:junit:4.12'
+}
