@@ -1,19 +1,10 @@
 package org.team997coders.spartanlib.scouting;
 
-public class DeepSpaceData {
+public class DeepSpaceData implements GameData {
 
-  public enum Color {
-    Red(0), Blue(1);
-
-    int value;
-
-    Color(int v) {
-      value = v;
-    }
-
-    public int getValue() { return value; }
-  }
-
-  public int matchNumber, teamNumber, cargo, hatches;
+  public int lowCargo, midCargo, highCargo, csCargo,
+    lowHatch, midHatch, highHatch,
+    climb, autoHab, defense, penalty;
   public Color alliance;
+  
 }
