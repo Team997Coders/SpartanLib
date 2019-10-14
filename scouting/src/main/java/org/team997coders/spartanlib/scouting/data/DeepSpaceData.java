@@ -1,4 +1,4 @@
-package org.team997coders.spartanlib.scouting;
+package org.team997coders.spartanlib.scouting.data;
 
 public class DeepSpaceData implements GameData {
 
@@ -6,5 +6,5 @@ public class DeepSpaceData implements GameData {
     lowHatch, midHatch, highHatch,
     climb, autoHab, defense, penalty;
   public Color alliance;
-  
+
 }
