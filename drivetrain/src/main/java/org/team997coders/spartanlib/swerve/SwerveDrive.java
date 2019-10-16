@@ -10,7 +10,7 @@ public abstract class SwerveDrive extends Subsystem {
 
   protected double wheelBase, trackWidth;
 
-  private SwerveModule[] modules;
+  protected SwerveModule[] modules;
 
   public SwerveDrive(double pWheelBase, double pTrackWidth, Command defaultCommand) {
     wheelBase = pWheelBase;
