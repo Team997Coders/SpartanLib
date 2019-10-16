@@ -22,7 +22,7 @@ public class ProtoModule extends SwerveModule<MiniPID, VictorSPX, VictorSPX> {
   private double encoderZero;
 
   public ProtoModule(int ID, int azimuthID, int driveID, int encoderID, double encoderZero,
-      double p, double i, double d, Command defaultCommand) {
+      double p, double i, double d) {
 
     super(ID);
 
@@ -36,7 +36,7 @@ public class ProtoModule extends SwerveModule<MiniPID, VictorSPX, VictorSPX> {
     azimuthController = new MiniPID(p, i, d);
     azimuthController.setOutputLimits(-1, 1);
 
-    setDefaultCommand(defaultCommand); // Not entirely sure if this would work but hek try it
+    // setDefaultCommand(defaultCommand); // Not entirely sure if this would work but hek try it
   }
 
   @Override

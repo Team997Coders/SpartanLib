@@ -12,11 +12,11 @@ public abstract class SwerveDrive extends Subsystem {
 
   protected SwerveModule[] modules;
 
-  public SwerveDrive(double pWheelBase, double pTrackWidth, Command defaultCommand) {
+  public SwerveDrive(double pWheelBase, double pTrackWidth) {
     wheelBase = pWheelBase;
     trackWidth = pTrackWidth;
 
-    setDefaultCommand(defaultCommand); // Again, have no idea if this will work the same, test plz
+    // setDefaultCommand(defaultCommand); // Again, have no idea if this will work the same, test plz
   }
 
   public SwerveMixerData SwerveMixer(double forward, double strafe, double rotation, double angle) {
