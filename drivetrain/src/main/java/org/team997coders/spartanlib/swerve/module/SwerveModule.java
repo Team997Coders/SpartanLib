@@ -21,6 +21,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
 
   public abstract void update();
   public abstract void updateSmartDashboard();
+  public abstract void updateAzimuthPID(double p, double i, double d);
 
   // public abstract double getTargetAngle();
   // public abstract double getTargetSpeed();
