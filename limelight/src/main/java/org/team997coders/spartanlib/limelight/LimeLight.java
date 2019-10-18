@@ -5,7 +5,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Class for controller the LimeLight
+ * Class for controlling the LimeLight
  */
 public class LimeLight {
   public double x = 0, y = 0;
@@ -48,6 +48,10 @@ public class LimeLight {
 
   public int getLED() {
     return (int) limeLightTable.getEntry(LED_MODE).getDouble(0);
+  }
+
+  public void setLED(LEDState state) {
+    setLED(state);
   }
 
   public void setLED(double a) {
