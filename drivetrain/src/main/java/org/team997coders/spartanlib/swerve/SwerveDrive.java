@@ -92,6 +92,12 @@ public abstract class SwerveDrive extends Subsystem {
     }
   }
 
+  public void updateAzimuthPID(double p, double i, double d) {
+    for (SwerveModule mod : modules) {
+      mod.updateAzimuthPID(p, i, d);
+    }
+  }
+
   public SwerveModule getModule(int index) {
     return modules[index];
   }
