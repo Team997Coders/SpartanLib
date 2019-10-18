@@ -3,51 +3,48 @@ package org.team997coders.spartanlib.swerve;
 import org.team997coders.spartanlib.helpers.SwerveMixerData;
 import org.team997coders.spartanlib.swerve.module.SwerveModule;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public abstract class SwerveDrive extends Subsystem {
 
-  protected double wheelBase, trackWidth;
+  protected double mWheelBase, mTrackWidth;
 
-  protected SwerveModule[] modules;
+  protected SwerveModule[] mModules;
 
   public SwerveDrive(double pWheelBase, double pTrackWidth) {
-    wheelBase = pWheelBase;
-    trackWidth = pTrackWidth;
-
-    // setDefaultCommand(defaultCommand); // Again, have no idea if this will work the same, test plz
+    mWheelBase = pWheelBase;
+    mTrackWidth = pTrackWidth;
   }
 
-  public SwerveMixerData SwerveMixer(double forward, double strafe, double rotation, double angle) {
-    return SwerveMixer(forward, strafe, rotation, true, angle);
+  public SwerveMixerData getSwerveData(double pForward, double pStrafe, double pRotation, double pAngle) {
+    return getSwerveData(pForward, pStrafe, pRotation, true, pAngle);
   }
 
-  public SwerveMixerData SwerveMixer(double forward, double strafe, double rotation) {
-    return SwerveMixer(forward, strafe, rotation, false, 0.0);
+  public SwerveMixerData getSwerveData(double pForward, double pStrafe, double pRotation) {
+    return getSwerveData(pForward, pStrafe, pRotation, false, 0.0);
   }
 
   /**
    * Basically 95% leveraged from Jack In The Bot
    */
-  private SwerveMixerData SwerveMixer(double forward, double strafe, double rotation, boolean isFieldOriented, double angle) {
+  private SwerveMixerData getSwerveData(double pForward, double pStrafe, double pRotation, boolean pIsFieldOriented, double pAngle) {
 
     SwerveMixerData smd = new SwerveMixerData();
-    smd.setForward(forward);
-    smd.setStrafe(strafe);
-    smd.setRotate(rotation);
+    smd.setForward(pForward);
+    smd.setStrafe(pStrafe);
+    smd.setRotate(pRotation);
 
-    if (isFieldOriented) {
-      double angleRad = Math.toRadians(angle);
-      double temp = forward * Math.cos(angleRad) + strafe * Math.sin(angleRad);
-      strafe = -forward * Math.sin(angleRad) + strafe * Math.cos(angleRad);
-      forward = temp;
+    if (pIsFieldOriented) {
+      double angleRad = Math.toRadians(pAngle);
+      double temp = pForward * Math.cos(angleRad) + pStrafe * Math.sin(angleRad);
+      pStrafe = -pForward * Math.sin(angleRad) + pStrafe * Math.cos(angleRad);
+      pForward = temp;
     }
 
-    double a = strafe - rotation * (wheelBase / trackWidth);
-    double b = strafe + rotation * (wheelBase / trackWidth);
-    double c = forward - rotation * (trackWidth / wheelBase);
-    double d = forward + rotation * (trackWidth / wheelBase);
+    double a = pStrafe - pRotation * (mWheelBase / mTrackWidth);
+    double b = pStrafe + pRotation * (mWheelBase / mTrackWidth);
+    double c = pForward - pRotation * (mTrackWidth / mWheelBase);
+    double d = pForward + pRotation * (mTrackWidth / mWheelBase);
 
     double[] angles = new double[] { Math.atan2(b, c) * 180 / Math.PI, Math.atan2(b, d) * 180 / Math.PI,
         Math.atan2(a, d) * 180 / Math.PI, Math.atan2(a, c) * 180 / Math.PI };
@@ -82,20 +79,18 @@ public abstract class SwerveDrive extends Subsystem {
   }
 
   public void setSwerveInput(SwerveMixerData smd) {
-    for (int i = 0; i < modules.length; i++) {
+    for (int i = 0; i < mModules.length; i++) {
       if (Math.abs(smd.getForward()) > 0.05 || Math.abs(smd.getStrafe()) > 0.05 || Math.abs(smd.getRotate()) > 0.05) {
-        modules[i].setTargetAngle(smd.getAngles()[i]);
+        mModules[i].setTargetAngle(smd.getAngles()[i]);
       } else {
-        modules[i].setTargetAngle(modules[i].getTargetAngle());
+        mModules[i].setTargetAngle(mModules[i].getTargetAngle());
       }
-      modules[i].setTargetSpeed(smd.getSpeeds()[i]);
+      mModules[i].setTargetSpeed(smd.getSpeeds()[i]);
     }
   }
 
-  public SwerveModule getModule(int index) {
-    return modules[index];
-  }
+  public SwerveModule getModule(int index) { return mModules[index]; }
 
-  public SwerveModule[] getModules() { return modules; }
+  public SwerveModule[] getModules() { return mModules; }
 
 }

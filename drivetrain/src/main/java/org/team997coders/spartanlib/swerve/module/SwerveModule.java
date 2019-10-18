@@ -6,9 +6,9 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
 
   public SwerveModule(int ID) { this.ID = ID; }
 
-  public AziCont azimuthController;
-  public Dri drive;
-  public Azi azimuth;
+  protected AziCont azimuthController;
+  protected Dri drive;
+  protected Azi azimuth;
 
   public int ID;
   protected double targetAngle = 0, targetSpeed = 0;
