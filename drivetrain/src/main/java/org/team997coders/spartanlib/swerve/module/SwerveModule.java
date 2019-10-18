@@ -6,9 +6,9 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
 
   public SwerveModule(int ID) { this.ID = ID; }
 
-  protected AziCont azimuthController;
-  protected Dri drive;
-  protected Azi azimuth;
+  public AziCont azimuthController;
+  public Dri drive;
+  public Azi azimuth;
 
   public int ID;
   protected double targetAngle = 0, targetSpeed = 0;
@@ -21,6 +21,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
 
   public abstract void update();
   public abstract void updateSmartDashboard();
+  public abstract void updateAzimuthPID(double p, double i, double d);
 
   // public abstract double getTargetAngle();
   // public abstract double getTargetSpeed();

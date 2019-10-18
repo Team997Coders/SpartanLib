@@ -124,6 +124,13 @@ public class ProtoModule extends SwerveModule<MiniPID, VictorSPX, VictorSPX> {
   }
 
   @Override
+  public void updateAzimuthPID(double p, double i, double d) {
+    azimuthController.setP(p);
+    azimuthController.setI(i);
+    azimuthController.setD(d);
+  }
+
+  @Override
   protected void initDefaultCommand() {
     //setDefaultCommand(new UpdateModule(0, this));
     //Robot.moduleRunner.AddAction(new UpdateModule(ID, this));
