@@ -2,14 +2,12 @@ package org.team997coders.spartanlib.swerve.module;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.team997coders.spartanlib.helpers.MiniPID;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMax> {
 
@@ -76,8 +74,9 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
 
   @Override
   public void updateAzimuthPID(double pP, double pI, double pD) {
-    // TODO Auto-generated method stub
-
+    mAzimuthController.setP(pP);
+    mAzimuthController.setI(pI);
+    mAzimuthController.setD(pD);
   }
 
   @Override

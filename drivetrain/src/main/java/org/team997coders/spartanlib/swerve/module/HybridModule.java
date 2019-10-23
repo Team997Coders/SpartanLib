@@ -73,8 +73,9 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
 
   @Override
   public void updateAzimuthPID(double pP, double pI, double pD) {
-    // TODO Auto-generated method stub
-
+    mAzimuthController.setP(pP);
+    mAzimuthController.setI(pI);
+    mAzimuthController.setD(pD);
   }
 
   @Override
