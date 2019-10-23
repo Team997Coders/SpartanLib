@@ -29,7 +29,7 @@ public class UpdateModule extends SpartanAction {
   @Override
   protected void init() {
     if (mod instanceof ProtoModule) {
-      ((MiniPID)mod.azimuthController).reset();
+      ((ProtoModule)mod).resetAzimuthController();
     }
     // lastGoodAlignment = System.currentTimeMillis();
   }
@@ -52,7 +52,7 @@ public class UpdateModule extends SpartanAction {
 
   @Override
   protected void interrupt() {
-    System.out.println("[" + mod.ID + "] Interrupted");
+    System.out.println("[" + mod.mID + "] Interrupted");
     end();
   }
 

@@ -1,37 +1,46 @@
 package org.team997coders.spartanlib.swerve.module;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
 
-  public SwerveModule(int ID) { this.ID = ID; }
+  public SwerveModule(int pID, int pEncoderID, double pEncoderZero) {
+    this.mID = pID;
+    this.mAzimuthEncoder = new AnalogInput(pEncoderID);
+    this.mEncoderZero = pEncoderZero;
+  }
 
-  public AziCont azimuthController;
-  public Dri drive;
-  public Azi azimuth;
+  protected AziCont mAzimuthController;
+  protected Dri mDrive;
+  protected Azi mAzimuth;
 
-  public int ID;
-  protected double targetAngle = 0, targetSpeed = 0;
+  protected AnalogInput mAzimuthEncoder;
+  protected final double ENCODER_MAX = 5;
+  protected double mEncoderZero;
+
+  public int mID;
+  protected double mTargetAngle = 0, mTargetSpeed = 0;
 
   // public abstract void setTargetAngle(double angle);
   // public abstract void setTargetSpeed(double speed);
-  protected abstract void setAzimuthSpeed(double speed);
-  protected abstract void setDriveSpeed(double speed);
-  protected abstract void invertDrive(boolean a);
+  protected abstract void setAzimuthSpeed(double pSpeed);
+  protected abstract void setDriveSpeed(double pSpeed);
+  protected abstract void invertDrive(boolean pA);
+  protected abstract void invertAzimuth(boolean pA);
 
   public abstract void update();
   public abstract void updateSmartDashboard();
-  public abstract void updateAzimuthPID(double p, double i, double d);
+  public abstract void updateAzimuthPID(double pP, double pI, double pD);
 
   // public abstract double getTargetAngle();
   // public abstract double getTargetSpeed();
   // protected abstract double getAzimuthError();
-  public abstract double getContributingSpeed(double direction);
-  public abstract double getAngle();
+  public abstract double getContributingSpeed(double pDirection);
 
   public double getAzimuthError() {
     double current = getAngle();
-    double error = targetAngle - current;
+    double error = mTargetAngle - current;
     if (Math.abs(error) > 180) {
       int sign = (int) (error / Math.abs(error));
       error += 180 * -sign;
@@ -42,7 +51,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   }
 
   public void setTargetSpeed(double speed) {
-    targetSpeed = speed;
+    mTargetSpeed = speed;
   }
 
   public void setTargetAngle(double angle) {
@@ -68,7 +77,34 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
       invertDrive(false); // drive.setInverted(false);
     }
 
-    this.targetAngle = p;
+    this.mTargetAngle = p;
+  }
+
+  public double getAngle() {
+    return encoderToAngle(getEncoderParsed(), true);
+  }
+
+  public double getRawEncoder() {
+    return mAzimuthEncoder.getVoltage();
+  }
+
+  public double getEncoderParsed() {
+    double a = getRawEncoder() - mEncoderZero;
+    return limitRange(a, 0, ENCODER_MAX);
+  }
+
+  public double encoderToAngle(double val, boolean isParsed) {
+    if (!isParsed) {
+      val = val - mEncoderZero;
+      val = limitRange(val, 0, ENCODER_MAX);
+    }
+
+    double mod = val / ENCODER_MAX;
+    return 360 * mod;
+  }
+
+  public double angleToEncoder(double val) {
+    return (ENCODER_MAX * val) / 360;
   }
 
   public double limitRange(double a, double min, double max) {
@@ -80,11 +116,11 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   }
 
   public double getTargetAngle() {
-    return targetAngle;
+    return mTargetAngle;
   }
 
   public double getTargetSpeed() {
-    return targetSpeed;
+    return mTargetSpeed;
   }
 
 }

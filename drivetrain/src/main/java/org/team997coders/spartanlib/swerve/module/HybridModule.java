@@ -1,0 +1,92 @@
+package org.team997coders.spartanlib.swerve.module;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import org.team997coders.spartanlib.helpers.MiniPID;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_VictorSPX> {
+
+  private final int ALIGNMENT_TIMEOUT = 1250; // Milliseconds until I start complaining
+  private final double ALIGNMENT_TOLERANCE = 2.5; // Tolerance in degrees
+  private double mLastGoodAlignment;
+
+  public HybridModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero, double pP, double pI,
+      double pD) {
+
+    super(pID, pEncoderID, pEncoderZero);
+
+    mAzimuth = new WPI_TalonSRX(pAzimuthID);
+    invertAzimuth(true);
+    mDrive = new WPI_VictorSPX(pDriveID);
+  }
+
+  @Override
+  protected void setAzimuthSpeed(double pSpeed) {
+    mAzimuth.set(ControlMode.PercentOutput, pSpeed);
+  }
+
+  @Override
+  protected void setDriveSpeed(double pSpeed) {
+    mDrive.set(ControlMode.PercentOutput, pSpeed);
+  }
+
+  @Override
+  protected void invertDrive(boolean pA) {
+    mDrive.setInverted(pA);
+  }
+
+  @Override
+  protected void invertAzimuth(boolean pA) {
+    mAzimuth.setInverted(pA);
+  }
+
+  @Override
+  public void update() {
+    double error = getAzimuthError();
+    double output = mAzimuthController.getOutput(0, error);
+    setAzimuthSpeed(output);
+    setDriveSpeed(getTargetSpeed());
+  }
+
+  @Override
+  public void updateSmartDashboard() {
+    SmartDashboard.putNumber("[" + mID + "] Module Encoder", getRawEncoder());
+    SmartDashboard.putNumber("[" + mID + "] Module Angle", getAngle());
+    SmartDashboard.putNumber("[" + mID + "] Module Target Angle", getTargetAngle());
+    SmartDashboard.putNumber("[" + mID + "] Module Target Speed", getTargetSpeed());
+
+    double target = getTargetAngle();
+    double actual = getAngle();
+    if (Math.abs(target - actual) <= ALIGNMENT_TOLERANCE) {
+      mLastGoodAlignment = System.currentTimeMillis();
+      SmartDashboard.putBoolean("[" + mID + "] Module Alignment Warning", true);
+    } else {
+      if (mLastGoodAlignment + ALIGNMENT_TIMEOUT < System.currentTimeMillis()) {
+        SmartDashboard.putBoolean("[" + mID + "] Module Alignment Warning", false);
+      }
+    }
+  }
+
+  @Override
+  public void updateAzimuthPID(double pP, double pI, double pD) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public double getContributingSpeed(double pDirection) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  protected void initDefaultCommand() {
+    // TODO Auto-generated method stub
+
+  }
+
+}
