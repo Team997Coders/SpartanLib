@@ -15,8 +15,8 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
   private final double ALIGNMENT_TOLERANCE = 2.5; // Tolerance in degrees
   private double mLastGoodAlignment;
 
-  public TorqueModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero, double pP, double pI,
-      double pD) {
+  public TorqueModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero,
+      double pP, double pI, double pD) {
 
     super(pID, pEncoderID, pEncoderZero);
 
@@ -36,12 +36,12 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
   }
 
   @Override
-  protected void invertDrive(boolean pA) {
+  public void invertDrive(boolean pA) {
     mDrive.setInverted(pA);
   }
 
   @Override
-  protected void invertAzimuth(boolean pA) {
+  public void invertAzimuth(boolean pA) {
     mAzimuth.setInverted(pA);
   }
 

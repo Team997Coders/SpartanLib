@@ -38,12 +38,12 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
   }
 
   @Override
-  protected void invertDrive(boolean pA) {
+  public void invertDrive(boolean pA) {
     mDrive.setInverted(pA);
   }
 
   @Override
-  protected void invertAzimuth(boolean pA) {
+  public void invertAzimuth(boolean pA) {
     mAzimuth.setInverted(pA);
   }
 
