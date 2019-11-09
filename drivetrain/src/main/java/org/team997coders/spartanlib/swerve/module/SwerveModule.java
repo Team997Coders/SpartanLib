@@ -38,16 +38,22 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   // protected abstract double getAzimuthError();
   public abstract double getContributingSpeed(double pDirection);
 
+  // It won't adjust on the fly if it goes past 90 degrees but it will if it passes 180
   public double getAzimuthError() {
-    double current = getAngle();
+    double current = limitRange(getAngle(), -180, 180);
     double error = mTargetAngle - current;
-    if (Math.abs(error) > 180) {
+
+    return error;
+    
+    /*if (Math.abs(error) > 180) {
       int sign = (int) (error / Math.abs(error));
       error += 180 * -sign;
-      return error;
+      //return error;
     } else {
-      return error;
-    }
+      //return error;
+    }*/
+
+    //return limitRange(error, 0, 360);
   }
 
   public void setTargetSpeed(double speed) {
@@ -109,9 +115,9 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
 
   public double limitRange(double a, double min, double max) {
     while (a < min)
-      a += max;
+      a += (max - min);
     while (a >= max)
-      a -= max;
+      a -= (max - min);
     return a;
   }
 

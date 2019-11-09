@@ -95,7 +95,7 @@ public abstract class SwerveDrive extends Subsystem {
     }
   }
 
-  public void updateAAHHH(int id, double p, double i, double d) {
+  public void updateAzimuthPID(int id, double p, double i, double d) {
     mModules[id].updateAzimuthPID(p, i, d);
   }
 
