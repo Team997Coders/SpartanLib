@@ -40,10 +40,10 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
 
   // It won't adjust on the fly if it goes past 90 degrees but it will if it passes 180
   public double getAzimuthError() {
-    double current = limitRange(getAngle(), -180, 180);
+    double current = getAngle();
     double error = mTargetAngle - current;
 
-    return error;
+    return limitRange(error, -180, 180);
     
     /*if (Math.abs(error) > 180) {
       int sign = (int) (error / Math.abs(error));
