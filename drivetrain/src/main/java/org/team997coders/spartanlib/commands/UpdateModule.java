@@ -28,9 +28,9 @@ public class UpdateModule extends SpartanAction {
 
   @Override
   protected void init() {
-    if (mod instanceof ProtoModule) {
-      ((ProtoModule)mod).resetAzimuthController();
-    }
+    //if (mod instanceof ProtoModule) {
+      //((ProtoModule)mod).resetAzimuthController();
+    //}
     // lastGoodAlignment = System.currentTimeMillis();
   }
 

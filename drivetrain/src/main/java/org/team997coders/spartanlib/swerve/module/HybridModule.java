@@ -38,21 +38,23 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
   }
 
   @Override
-  protected void invertDrive(boolean pA) {
+  public void invertDrive(boolean pA) {
     mDrive.setInverted(pA);
   }
 
   @Override
-  protected void invertAzimuth(boolean pA) {
+  public void invertAzimuth(boolean pA) {
     mAzimuth.setInverted(pA);
   }
 
   @Override
   public void update() {
     double error = getAzimuthError();
+    SmartDashboard.putNumber("[" + mID + "] Module Error", error);
     double output = mAzimuthController.getOutput(0, error);
+    SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
-    setDriveSpeed(getTargetSpeed());
+    setDriveSpeed(getTargetSpeed() * 0.25);
   }
 
   @Override

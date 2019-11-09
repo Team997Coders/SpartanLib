@@ -26,8 +26,8 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   // public abstract void setTargetSpeed(double speed);
   protected abstract void setAzimuthSpeed(double pSpeed);
   protected abstract void setDriveSpeed(double pSpeed);
-  protected abstract void invertDrive(boolean pA);
-  protected abstract void invertAzimuth(boolean pA);
+  public abstract void invertDrive(boolean pA);
+  public abstract void invertAzimuth(boolean pA);
 
   public abstract void update();
   public abstract void updateSmartDashboard();
@@ -110,7 +110,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   public double limitRange(double a, double min, double max) {
     while (a < min)
       a += max;
-    while (a > max)
+    while (a >= max)
       a -= max;
     return a;
   }
