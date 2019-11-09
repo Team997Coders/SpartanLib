@@ -110,7 +110,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   public double limitRange(double a, double min, double max) {
     while (a < min)
       a += max;
-    while (a > max)
+    while (a >= max)
       a -= max;
     return a;
   }
