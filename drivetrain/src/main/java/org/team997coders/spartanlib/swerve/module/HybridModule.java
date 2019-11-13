@@ -60,7 +60,7 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
     double output = mAzimuthController.getOutput(0, error);
     SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
-    setDriveSpeed(getTargetSpeed() * 0);
+    setDriveSpeed(getTargetSpeed() * 1);
   }
 
   @Override
