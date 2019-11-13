@@ -24,7 +24,7 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
     mDrive = new WPI_VictorSPX(pDriveID);
 
     mAzimuthController = new MiniPID(pP, pI, pD);
-    mAzimuthController.setOutputLimits(-1, 1);
+    mAzimuthController.setOutputLimits(-200, 200);
   }
 
   @Override
@@ -43,6 +43,12 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
   }
 
   @Override
+  public void invertDrive(boolean pA, boolean internal) {
+    mDrive.setInverted(pA);
+    driveDir = !pA;
+  }
+
+  @Override
   public void invertAzimuth(boolean pA) {
     mAzimuth.setInverted(pA);
   }
@@ -54,7 +60,7 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
     double output = mAzimuthController.getOutput(0, error);
     SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
-    setDriveSpeed(getTargetSpeed() * 0.25);
+    setDriveSpeed(getTargetSpeed() * 0);
   }
 
   @Override
@@ -81,6 +87,7 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
     mAzimuthController.setP(pP);
     mAzimuthController.setI(pI);
     mAzimuthController.setD(pD);
+    System.out.println(pD);
   }
 
   @Override

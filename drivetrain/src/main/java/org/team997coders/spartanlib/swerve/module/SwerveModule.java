@@ -11,6 +11,8 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
     this.mEncoderZero = pEncoderZero;
   }
 
+  public boolean driveDir = true;
+
   protected AziCont mAzimuthController;
   protected Dri mDrive;
   protected Azi mAzimuth;
@@ -27,6 +29,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   protected abstract void setAzimuthSpeed(double pSpeed);
   protected abstract void setDriveSpeed(double pSpeed);
   public abstract void invertDrive(boolean pA);
+  public abstract void invertDrive(boolean pA, boolean internal);
   public abstract void invertAzimuth(boolean pA);
 
   public abstract void update();
@@ -78,9 +81,11 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
         p += 180;
       else if (delta < -90)
         p -= 180;
-      invertDrive(true); // drive.setInverted(true);
+      if (driveDir) invertDrive(true);
+      else invertDrive(false); // drive.setInverted(true);
     } else {
-      invertDrive(false); // drive.setInverted(false);
+      if (driveDir) invertDrive(false); // drive.setInverted(false);
+      else invertDrive(true);
     }
 
     this.mTargetAngle = p;

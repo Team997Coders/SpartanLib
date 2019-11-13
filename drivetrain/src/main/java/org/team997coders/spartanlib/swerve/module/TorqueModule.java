@@ -46,6 +46,12 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
   }
 
   @Override
+  public void invertDrive(boolean pA, boolean internal) {
+    mDrive.setInverted(pA);
+    driveDir = !pA;
+  }
+
+  @Override
   public void update() {
     double error = getAzimuthError();
     double output = mAzimuthController.getOutput(0, error);

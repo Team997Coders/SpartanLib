@@ -86,6 +86,12 @@ public class ProtoModule extends SwerveModule<MiniPID, VictorSPX, VictorSPX> {
   }
 
   @Override
+  public void invertDrive(boolean pA, boolean internal) {
+    mDrive.setInverted(pA);
+    driveDir = !pA;
+  }
+
+  @Override
   public void updateAzimuthPID(double p, double i, double d) {
     mAzimuthController.setP(p);
     mAzimuthController.setI(i);
