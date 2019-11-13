@@ -1,20 +1,22 @@
 package org.team997coders.spartanlib.swerve.module;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import org.team997coders.spartanlib.controllers.MiniPID;
+import org.team997coders.spartanlib.controllers.SpartanPID;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_VictorSPX> {
+public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> {
 
   private final int ALIGNMENT_TIMEOUT = 1250; // Milliseconds until I start complaining
   private final double ALIGNMENT_TOLERANCE = 2.5; // Tolerance in degrees
   private double mLastGoodAlignment;
 
-  public HybridModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero, double pP, double pI,
+  public MerlinModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero, double pP, double pI,
       double pD) {
 
     super(pID, pEncoderID, pEncoderZero);
@@ -23,13 +25,21 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
     invertAzimuth(true);
     mDrive = new WPI_VictorSPX(pDriveID);
 
-    mAzimuthController = new MiniPID(pP, pI, pD);
-    mAzimuthController.setOutputLimits(-200, 200);
+    mAzimuthController = new SpartanPID(pP, pI, pD);
+    mAzimuthController.setMinOutput(-1);
+    mAzimuthController.setMaxOutput(1);
   }
 
   @Override
   protected void setAzimuthSpeed(double pSpeed) {
     mAzimuth.set(ControlMode.PercentOutput, pSpeed);
+  }
+
+  @Override
+  public void setTargetAngle(double angle) {
+    super.setTargetAngle(angle);
+    mAzimuthController.reset();
+    mAzimuthController.setSetpoint(mTargetAngle);
   }
 
   @Override
@@ -55,9 +65,16 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
 
   @Override
   public void update() {
-    double error = getAzimuthError();
+    mAzimuthController.setSetpoint(0.0);
+
+    double adjustedTheta = getAngle();
+    while (adjustedTheta < mTargetAngle - 180) adjustedTheta += 360;
+    while (adjustedTheta >= mTargetAngle + 180) adjustedTheta -= 360;
+
+    double error = mTargetAngle - adjustedTheta;
     SmartDashboard.putNumber("[" + mID + "] Module Error", error);
-    double output = mAzimuthController.getOutput(0, error);
+    
+    double output = mAzimuthController.WhatShouldIDo(adjustedTheta, 0.02);
     SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
     setDriveSpeed(getTargetSpeed() * 1);

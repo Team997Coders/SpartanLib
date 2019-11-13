@@ -23,6 +23,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
 
   public int mID;
   protected double mTargetAngle = 0, mTargetSpeed = 0;
+  protected double mLastError = 0, mLastOutput = 0;
 
   // public abstract void setTargetAngle(double angle);
   // public abstract void setTargetSpeed(double speed);
@@ -47,21 +48,9 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
     double error = mTargetAngle - current;
 
     return limitRange(error, -180, 180);
-    
-    /*if (Math.abs(error) > 180) {
-      int sign = (int) (error / Math.abs(error));
-      error += 180 * -sign;
-      //return error;
-    } else {
-      //return error;
-    }*/
-
-    //return limitRange(error, 0, 360);
   }
 
-  public void setTargetSpeed(double speed) {
-    mTargetSpeed = speed;
-  }
+  public void setTargetSpeed(double speed) { mTargetSpeed = speed; }
 
   public void setTargetAngle(double angle) {
     double p = limitRange(angle, 0, 360);
@@ -95,9 +84,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
     return encoderToAngle(getEncoderParsed(), true);
   }
 
-  public double getRawEncoder() {
-    return mAzimuthEncoder.getVoltage();
-  }
+  public double getRawEncoder() { return mAzimuthEncoder.getVoltage(); }
 
   public double getEncoderParsed() {
     double a = getRawEncoder() - mEncoderZero;
@@ -114,24 +101,17 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
     return 360 * mod;
   }
 
-  public double angleToEncoder(double val) {
-    return (ENCODER_MAX * val) / 360;
-  }
+  public double angleToEncoder(double val) { return (ENCODER_MAX * val) / 360; }
 
   public double limitRange(double a, double min, double max) {
-    while (a < min)
-      a += (max - min);
-    while (a >= max)
-      a -= (max - min);
+    while (a < min) a += (max - min);
+    while (a >= max) a -= (max - min);
     return a;
   }
 
-  public double getTargetAngle() {
-    return mTargetAngle;
-  }
-
-  public double getTargetSpeed() {
-    return mTargetSpeed;
-  }
+  public double getTargetAngle() { return mTargetAngle; }
+  public double getTargetSpeed() { return mTargetSpeed; }
+  public double getLastError() { return mLastError; }
+  public double getLastOutput() { return mLastOutput; }
 
 }

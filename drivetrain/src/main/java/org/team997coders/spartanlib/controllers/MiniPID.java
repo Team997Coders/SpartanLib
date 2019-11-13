@@ -1,4 +1,4 @@
-package org.team997coders.spartanlib.helpers;
+package org.team997coders.spartanlib.controllers;
 /**
 * Small, easy to use PID implementation with advanced controller capability.<br> 
 * Minimal usage:<br>

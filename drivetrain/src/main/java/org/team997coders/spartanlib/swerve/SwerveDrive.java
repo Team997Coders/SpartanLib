@@ -28,7 +28,6 @@ public abstract class SwerveDrive extends Subsystem {
    * Basically 95% leveraged from Jack In The Bot
    */
   private SwerveMixerData getSwerveData(double pForward, double pStrafe, double pRotation, boolean pIsFieldOriented, double pAngle) {
-
     SwerveMixerData smd = new SwerveMixerData();
     smd.setForward(pForward);
     smd.setStrafe(pStrafe);
@@ -95,13 +94,9 @@ public abstract class SwerveDrive extends Subsystem {
     }
   }
 
-  public void updateAzimuthPID(int id, double p, double i, double d) {
-    mModules[id].updateAzimuthPID(p, i, d);
-  }
+  public void updateAzimuthPID(int id, double p, double i, double d) { mModules[id].updateAzimuthPID(p, i, d); }
 
-  public SwerveModule getModule(int index) {
-    return mModules[index];
-  }
+  public SwerveModule getModule(int index) { return mModules[index]; }
 
   public SwerveModule[] getModules() { return mModules; }
 

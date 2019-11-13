@@ -3,11 +3,12 @@ package org.team997coders.spartanlib.swerve.module;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import org.team997coders.spartanlib.helpers.MiniPID;
+import org.team997coders.spartanlib.controllers.MiniPID;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// TODO: Update the proto module to match all the newly added additions from MerlinModule
 public class ProtoModule extends SwerveModule<MiniPID, VictorSPX, VictorSPX> {
 
   private final int ALIGNMENT_TIMEOUT = 1250; // Milliseconds until I start complaining

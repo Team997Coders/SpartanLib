@@ -5,10 +5,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import org.team997coders.spartanlib.helpers.MiniPID;
+import org.team997coders.spartanlib.controllers.MiniPID;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// TODO: Update the torque module to match all the newly added additions from MerlinModule
 public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMax> {
 
   private final int ALIGNMENT_TIMEOUT = 1250; // Milliseconds until I start complaining
@@ -86,15 +87,9 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
   }
 
   @Override
-  public double getContributingSpeed(double pDirection) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
+  public double getContributingSpeed(double pDirection) { return 0; }
 
   @Override
-  protected void initDefaultCommand() {
-    // TODO Auto-generated method stub
-
-  }
+  protected void initDefaultCommand() { }
 
 }

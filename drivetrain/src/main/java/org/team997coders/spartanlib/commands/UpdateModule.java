@@ -1,8 +1,6 @@
 package org.team997coders.spartanlib.commands;
 
-import org.team997coders.spartanlib.helpers.MiniPID;
 import org.team997coders.spartanlib.helpers.threading.SpartanAction;
-import org.team997coders.spartanlib.swerve.module.ProtoModule;
 import org.team997coders.spartanlib.swerve.module.SwerveModule;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
