@@ -14,12 +14,16 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
 
   private final int ALIGNMENT_TIMEOUT = 1250; // Milliseconds until I start complaining
   private final double ALIGNMENT_TOLERANCE = 2.5; // Tolerance in degrees
+
+  private double mLastUpdate = Double.NaN;
   private double mLastGoodAlignment;
 
   public MerlinModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero, double pP, double pI,
       double pD) {
 
     super(pID, pEncoderID, pEncoderZero);
+
+    mLastUpdate = System.currentTimeMillis();
 
     mAzimuth = new WPI_TalonSRX(pAzimuthID);
     invertAzimuth(true);
@@ -67,6 +71,11 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
   public void update() {
     mAzimuthController.setSetpoint(0.0);
 
+    double deltaT = 0.0;
+    double now = System.currentTimeMillis();
+    if (Double.isFinite(mLastUpdate)) deltaT = (now - mLastUpdate) * 1000;
+    mLastUpdate = now;
+
     double adjustedTheta = getAngle();
     while (adjustedTheta < mTargetAngle - 180) adjustedTheta += 360;
     while (adjustedTheta >= mTargetAngle + 180) adjustedTheta -= 360;
@@ -74,7 +83,7 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
     double error = mTargetAngle - adjustedTheta;
     SmartDashboard.putNumber("[" + mID + "] Module Error", error);
     
-    double output = mAzimuthController.WhatShouldIDo(adjustedTheta, 0.02);
+    double output = mAzimuthController.WhatShouldIDo(adjustedTheta, deltaT);
     SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
     setDriveSpeed(getTargetSpeed() * 1);

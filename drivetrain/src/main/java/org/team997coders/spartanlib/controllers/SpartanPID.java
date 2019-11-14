@@ -12,6 +12,7 @@ public class SpartanPID {
   private double mSetpoint = 0.0;
 
   private double intAccum = 0.0;
+  private double intRange = 0.0;
   private double lastErr = Double.NaN;
 
   public SpartanPID(double p, double i, double d) {
@@ -28,7 +29,7 @@ public class SpartanPID {
       intAccum = 0.0;
     }
 
-    intAccum += error * deltaT; // Add the new stuff
+    if (Math.abs(intAccum) > intRange / 2) intAccum += error * deltaT; // Add the new stuff
 
     double derivative = 0.0;
     if (Double.isFinite(lastErr)) {
@@ -55,55 +56,23 @@ public class SpartanPID {
     else return val;
   }
 
-  /**
-   * MWAHAHAHA I USED CODE TO GENERATE CODE. BOW DOWN TO MY SKILLLZZZ
-   */
+  // Getters and Setters
 
-  public double getP() {
-    return mP;
-  }
+  public double getP() { return mP; }
+  public double getI() { return mI; }
+  public double getD() { return mD; }
+  public double getMinOutput() { return mMinOutput; }
+  public double getMaxOutput() { return mMaxOutput; }
+  public double getSetpoint() { return mSetpoint; }
+  public double getIntegralRange() { return intRange; }
 
-  public void setP(double P) {
-    mP = P;
-  }
+  public void setP(double P) { mP = P; }
+  public void setI(double I) { mI = I; }
+  public void setD(double D) { mD = D; }
+  public void setMinOutput(double MinOutput) { mMinOutput = MinOutput; }
+  public void setMaxOutput(double MaxOutput) { mMaxOutput = MaxOutput; }
+  public void setOutputRange(double Min, double Max) { mMinOutput = Min; mMaxOutput = Max; }
+  public void setSetpoint(double Setpoint) { mSetpoint = Setpoint; }
+  public void setIntegralRange(double Range) { intRange = Range; }
 
-  public double getI() {
-    return mI;
-  }
-
-  public void setI(double I) {
-    mI = I;
-  }
-
-  public double getD() {
-    return mD;
-  }
-
-  public void setD(double D) {
-    mD = D;
-  }
-
-  public double getMinOutput() {
-    return mMinOutput;
-  }
-
-  public void setMinOutput(double MinOutput) {
-    mMinOutput = MinOutput;
-  }
-
-  public double getMaxOutput() {
-    return mMaxOutput;
-  }
-
-  public void setMaxOutput(double MaxOutput) {
-    mMaxOutput = MaxOutput;
-  }
-
-  public double getSetpoint() {
-    return mSetpoint;
-  }
-
-  public void setSetpoint(double Setpoint) {
-    mSetpoint = Setpoint;
-  }
 }
