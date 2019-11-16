@@ -1,6 +1,7 @@
 package org.team997coders.spartanlib.swerve.module;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -54,13 +55,19 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
   }
 
   @Override
+  public void setDriveBrakeMode(boolean pMode) {
+    if (pMode) mDrive.setNeutralMode(NeutralMode.Brake);
+    else mDrive.setNeutralMode(NeutralMode.Coast);
+  }
+
+  @Override
   public void update() {
     double error = getAzimuthError();
     SmartDashboard.putNumber("[" + mID + "] Module Error", error);
     double output = mAzimuthController.getOutput(0, error);
     SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
-    setDriveSpeed(getTargetSpeed() * 1);
+    setDriveSpeed(getTargetSpeed() * 0.75);
   }
 
   @Override

@@ -3,6 +3,7 @@ package org.team997coders.spartanlib.swerve.module;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.team997coders.spartanlib.controllers.MiniPID;
@@ -50,6 +51,12 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
   public void invertDrive(boolean pA, boolean internal) {
     mDrive.setInverted(pA);
     driveDir = !pA;
+  }
+
+  @Override
+  public void setDriveBrakeMode(boolean pMode) {
+    if (pMode) mDrive.setIdleMode(IdleMode.kBrake);
+    else mDrive.setIdleMode(IdleMode.kCoast);
   }
 
   @Override

@@ -32,6 +32,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   public abstract void invertDrive(boolean pA);
   public abstract void invertDrive(boolean pA, boolean internal);
   public abstract void invertAzimuth(boolean pA);
+  public abstract void setDriveBrakeMode(boolean pMode);
 
   public abstract void update();
   public abstract void updateSmartDashboard();
