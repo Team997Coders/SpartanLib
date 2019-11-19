@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import org.team997coders.spartanlib.controllers.SpartanPID;
+import org.team997coders.spartanlib.helpers.PIDConstants;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,8 +19,7 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
   private double mLastUpdate = Double.NaN;
   private double mLastGoodAlignment;
 
-  public MerlinModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero, double pP, double pI,
-      double pD) {
+  public MerlinModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero, PIDConstants pAziConsts) {
 
     super(pID, pEncoderID, pEncoderZero);
 
@@ -29,7 +29,7 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
     invertAzimuth(true);
     mDrive = new WPI_VictorSPX(pDriveID);
 
-    mAzimuthController = new SpartanPID(pP, pI, pD);
+    mAzimuthController = new SpartanPID(pAziConsts.P, pAziConsts.I, pAziConsts.D);
     mAzimuthController.setMinOutput(-1);
     mAzimuthController.setMaxOutput(1);
   }

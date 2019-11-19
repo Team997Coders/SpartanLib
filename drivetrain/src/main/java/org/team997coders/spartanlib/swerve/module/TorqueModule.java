@@ -2,28 +2,50 @@ package org.team997coders.spartanlib.swerve.module;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import org.team997coders.spartanlib.controllers.MiniPID;
+import org.team997coders.spartanlib.controllers.SpartanPID;
+import org.team997coders.spartanlib.helpers.PIDConstants;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// TODO: Update the torque module to match all the newly added additions from MerlinModule
-public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMax> {
+public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSparkMax> {
 
   private final int ALIGNMENT_TIMEOUT = 1250; // Milliseconds until I start complaining
   private final double ALIGNMENT_TOLERANCE = 2.5; // Tolerance in degrees
+
+  private double mLastUpdate = Double.NaN;
   private double mLastGoodAlignment;
 
-  public TorqueModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero,
-      double pP, double pI, double pD) {
+  private CANPIDController mDriveController;
+  private CANEncoder mDriveEncoder;
+
+  public TorqueModule(int pID, int pAzimuthID, int pDriveID, int pEncoderID, double pEncoderZero, PIDConstants pAziConsts, PIDConstants pDriConsts) {
 
     super(pID, pEncoderID, pEncoderZero);
+
+    mLastUpdate = System.currentTimeMillis();
 
     mAzimuth = new WPI_TalonSRX(pAzimuthID);
     invertAzimuth(true);
     mDrive = new CANSparkMax(pDriveID, MotorType.kBrushless);
+    mDriveEncoder = mDrive.getEncoder();
+    mDriveController = mDrive.getPIDController();
+
+    mDriveEncoder.setPosition(0.0);
+
+    mDriveController.setOutputRange(-1, 1);
+    mDriveController.setP(pDriConsts.P);
+    mDriveController.setP(pDriConsts.I);
+    mDriveController.setP(pDriConsts.D);
+
+    mAzimuthController = new SpartanPID(pAziConsts.P, pAziConsts.I, pAziConsts.D);
+    mAzimuthController.setMinOutput(-1);
+    mAzimuthController.setMaxOutput(1);
   }
 
   @Override
@@ -32,18 +54,21 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
   }
 
   @Override
+  public void setTargetAngle(double angle) {
+    super.setTargetAngle(angle);
+    mAzimuthController.reset();
+    mAzimuthController.setSetpoint(mTargetAngle);
+  }
+
+  @Override
   protected void setDriveSpeed(double pSpeed) {
-    mDrive.set(pSpeed);
+    mDriveController.setIAccum(0.0);
+    mDriveController.setReference(pSpeed, ControlType.kDutyCycle);
   }
 
   @Override
   public void invertDrive(boolean pA) {
     mDrive.setInverted(pA);
-  }
-
-  @Override
-  public void invertAzimuth(boolean pA) {
-    mAzimuth.setInverted(pA);
   }
 
   @Override
@@ -53,11 +78,30 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
   }
 
   @Override
+  public void invertAzimuth(boolean pA) {
+    mAzimuth.setInverted(pA);
+  }
+
+  @Override
   public void update() {
-    double error = getAzimuthError();
-    double output = mAzimuthController.getOutput(0, error);
+    mAzimuthController.setSetpoint(0.0);
+
+    double deltaT = 0.0;
+    double now = System.currentTimeMillis();
+    if (Double.isFinite(mLastUpdate)) deltaT = (now - mLastUpdate) * 1000;
+    mLastUpdate = now;
+
+    double adjustedTheta = getAngle();
+    while (adjustedTheta < mTargetAngle - 180) adjustedTheta += 360;
+    while (adjustedTheta >= mTargetAngle + 180) adjustedTheta -= 360;
+
+    double error = mTargetAngle - adjustedTheta;
+    SmartDashboard.putNumber("[" + mID + "] Module Error", error);
+    
+    double output = mAzimuthController.WhatShouldIDo(adjustedTheta, deltaT);
+    SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
-    setDriveSpeed(getTargetSpeed());
+    setDriveSpeed(getTargetSpeed() * 1);
   }
 
   @Override
@@ -84,6 +128,7 @@ public class TorqueModule extends SwerveModule<MiniPID, WPI_TalonSRX, CANSparkMa
     mAzimuthController.setP(pP);
     mAzimuthController.setI(pI);
     mAzimuthController.setD(pD);
+    System.out.println(pD);
   }
 
   @Override
