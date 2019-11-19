@@ -6,6 +6,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.team997coders.spartanlib.controllers.SpartanPID;
@@ -80,6 +81,11 @@ public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSpar
   @Override
   public void invertAzimuth(boolean pA) {
     mAzimuth.setInverted(pA);
+  }
+  
+  public void setDriveBrakeMode(boolean pMode) {
+    if (pMode) mDrive.setIdleMode(IdleMode.kBrake);
+    else mDrive.setIdleMode(IdleMode.kCoast);
   }
 
   @Override

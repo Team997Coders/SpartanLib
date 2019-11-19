@@ -1,6 +1,7 @@
 package org.team997coders.spartanlib.swerve.module;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import org.team997coders.spartanlib.controllers.MiniPID;
@@ -84,6 +85,12 @@ public class ProtoModule extends SwerveModule<MiniPID, VictorSPX, VictorSPX> {
   @Override
   public void invertAzimuth(boolean pA) {
     mAzimuth.setInverted(pA);  
+  }
+
+  @Override
+  public void setDriveBrakeMode(boolean pMode) {
+    if (pMode) mDrive.setNeutralMode(NeutralMode.Brake);
+    else mDrive.setNeutralMode(NeutralMode.Coast);
   }
 
   @Override

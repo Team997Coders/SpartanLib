@@ -1,6 +1,7 @@
 package org.team997coders.spartanlib.swerve.module;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -68,12 +69,19 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
   }
 
   @Override
+  public void setDriveBrakeMode(boolean pMode) {
+    if (pMode) mDrive.setNeutralMode(NeutralMode.Brake);
+    else mDrive.setNeutralMode(NeutralMode.Coast);
+  }
+
+  @Override
   public void update() {
-    mAzimuthController.setSetpoint(0.0);
+    //mAzimuthController.setSetpoint(0.0);
 
     double deltaT = 0.0;
     double now = System.currentTimeMillis();
-    if (Double.isFinite(mLastUpdate)) deltaT = (now - mLastUpdate) * 1000;
+    if (Double.isFinite(mLastUpdate)) deltaT = (now - mLastUpdate);
+    SmartDashboard.putNumber("DELTA T", deltaT);
     mLastUpdate = now;
 
     double adjustedTheta = getAngle();
@@ -86,7 +94,7 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
     double output = mAzimuthController.WhatShouldIDo(adjustedTheta, deltaT);
     SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
-    setDriveSpeed(getTargetSpeed() * 1);
+    setDriveSpeed(getTargetSpeed() * 0.75);
   }
 
   @Override

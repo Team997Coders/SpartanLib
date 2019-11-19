@@ -1,5 +1,7 @@
 package org.team997coders.spartanlib.controllers;
 
+import org.team997coders.spartanlib.math.MathUtils;
+
 public class SpartanPID {
 
   private double mP = 0.0;
@@ -41,19 +43,13 @@ public class SpartanPID {
     double i = mI * intAccum;
     double d = mD * derivative;
 
-    return clamp(p + i + d, mMinOutput, mMaxOutput);
+    return MathUtils.clamp(p + i + d, mMinOutput, mMaxOutput);
   }
 
   public void reset() { intAccum = 0.0; lastErr = Double.NaN; }
 
   public boolean epsilon(double a, double b) {
     return Math.abs(a - b) < 1e-9; // Literally just a tolerance because lazy
-  }
-
-  public double clamp(double val, double min, double max) {
-    if (val < min) return min;
-    else if (val > max) return max; // Yet another lazy method
-    else return val;
   }
 
   // Getters and Setters
