@@ -1,5 +1,7 @@
 package org.team997coders.spartanlib.swerve.module;
 
+import org.team997coders.spartanlib.math.Vector2;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -11,7 +13,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
     this.mEncoderZero = pEncoderZero;
   }
 
-  public boolean driveDir = true;
+  public boolean driveInverted = true;
 
   protected AziCont mAzimuthController;
   protected Dri mDrive;
@@ -41,7 +43,8 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   // public abstract double getTargetAngle();
   // public abstract double getTargetSpeed();
   // protected abstract double getAzimuthError();
-  public abstract double getContributingSpeed(double pDirection);
+  public abstract double getDriveSpeed();
+  public abstract Vector2 getSpeedVector();
 
   // It won't adjust on the fly if it goes past 90 degrees but it will if it passes 180
   public double getAzimuthError() {
@@ -71,11 +74,9 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
         p += 180;
       else if (delta < -90)
         p -= 180;
-      if (driveDir) invertDrive(true);
-      else invertDrive(false); // drive.setInverted(true);
+        invertDrive(!driveInverted);
     } else {
-      if (driveDir) invertDrive(false); // drive.setInverted(false);
-      else invertDrive(true);
+      invertDrive(driveInverted);
     }
 
     this.mTargetAngle = p;

@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import org.team997coders.spartanlib.controllers.MiniPID;
+import org.team997coders.spartanlib.math.Vector2;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -46,7 +47,7 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
   @Override
   public void invertDrive(boolean pA, boolean internal) {
     mDrive.setInverted(pA);
-    driveDir = !pA;
+    driveInverted = pA;
   }
 
   @Override
@@ -98,7 +99,17 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
   }
 
   @Override
-  public double getContributingSpeed(double pDirection) { return 0; }
+  public double getDriveSpeed() {
+    return mTargetSpeed;
+  }
+
+  @Override
+  public Vector2 getSpeedVector() {
+    double speed = (getDriveSpeed() * (driveInverted ^ mDrive.getInverted() ? -1 : 1));
+    double x = speed * Math.sin((getAngle() * Math.PI) / 180);
+    double y = speed * Math.cos((getAngle() * Math.PI) / 180);
+    return new Vector2(x, y);
+  }
 
   @Override
   protected void initDefaultCommand() { }
