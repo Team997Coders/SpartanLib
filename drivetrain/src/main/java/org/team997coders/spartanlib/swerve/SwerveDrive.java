@@ -9,7 +9,7 @@ public abstract class SwerveDrive extends Subsystem {
 
   protected double mWheelBase, mTrackWidth;
 
-  protected SwerveModule<Object, Object, Object>[] mModules;
+  protected SwerveModule[] mModules;
 
   public SwerveDrive(double pWheelBase, double pTrackWidth) {
     mWheelBase = pWheelBase;
@@ -89,15 +89,15 @@ public abstract class SwerveDrive extends Subsystem {
   }
 
   public void updateAzimuthPID(double p, double i, double d) {
-    for (SwerveModule<Object, Object, Object> mod : mModules) {
+    for (SwerveModule mod : mModules) {
       mod.updateAzimuthPID(p, i, d);
     }
   }
 
   public void updateAzimuthPID(int id, double p, double i, double d) { mModules[id].updateAzimuthPID(p, i, d); }
 
-  public SwerveModule<Object, Object, Object> getModule(int index) { return mModules[index]; }
+  public SwerveModule getModule(int index) { return mModules[index]; }
 
-  public SwerveModule<Object, Object, Object>[] getModules() { return mModules; }
+  public SwerveModule[] getModules() { return mModules; }
 
 }
