@@ -10,17 +10,17 @@ public class UpdateModule extends SpartanAction {
   // private final int ALIGNMENT_TIMEOUT = 1250; // Milliseconds until I start complaining
   // private final double ALIGNMENT_TOLERANCE = 2.5; // Tolerance in degrees
 
-  private SwerveModule mod;
+  private SwerveModule<Object, Object, Object> mod;
 
   // private double lastTargetAngle = 0;
   // private double lastGoodAlignment;
 
-  public UpdateModule(SwerveModule module, Subsystem s) {
+  public UpdateModule(SwerveModule<Object, Object, Object> module, Subsystem s) {
     mod = module;
     requires(s);
   }
 
-  public UpdateModule(SwerveModule module) {
+  public UpdateModule(SwerveModule<Object, Object, Object> module) {
     mod = module;
   }
 
