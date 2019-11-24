@@ -88,12 +88,12 @@ public class LimeLight {
     }
   }
 
-  public enum SnapshotMode implements LimeLightValue {
+  public enum CaptureMode implements LimeLightValue {
     StopTakingSnapshots(0), TakeSnapshots(1);
 
     int value;
 
-    SnapshotMode(int value) {
+    CaptureMode(int value) {
       this.value = value;
     }
 
@@ -103,7 +103,7 @@ public class LimeLight {
     }
   }
 
-  public static String
+  public static final String
     LED_MODE = "ledMode",
     CAMERA_MODE = "camMode",
     CAPTURE_MODE = "snapshot",
