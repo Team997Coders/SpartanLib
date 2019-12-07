@@ -1,5 +1,6 @@
 package org.team997coders.spartanlib.controllers;
 
+import org.team997coders.spartanlib.helpers.PIDConstants;
 import org.team997coders.spartanlib.math.MathUtils;
 
 public class SpartanPID {
@@ -17,10 +18,10 @@ public class SpartanPID {
   private double intRange = 0.0;
   private double lastErr = Double.NaN;
 
-  public SpartanPID(double p, double i, double d) {
-    mP = p;
-    mI = i;
-    mD = d;
+  public SpartanPID(PIDConstants pidConsts) {
+    mP = pidConsts.P;
+    mI = pidConsts.I;
+    mD = pidConsts.D;
   }
 
   public double WhatShouldIDo(double current, double deltaT) {

@@ -1,6 +1,8 @@
 package org.team997coders.spartanlib.helpers.threading;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SpartanRunner {
 
@@ -10,12 +12,33 @@ public class SpartanRunner {
   private Thread t;
   private ArrayList<SpartanAction> actions;
 
+  public static Lock threadLock;
+
   public SpartanRunner(int loopFrequency) {
+
+    threadLock = new ReentrantLock();
+
     this.loopFrequency = loopFrequency;
     actions = new ArrayList<SpartanAction>();
 
     t = new Thread(this::Run);
     t.start();
+  }
+
+  public static boolean LockThread() {
+    if (threadLock == null) return false;
+
+    threadLock.lock();
+
+    return true;
+  }
+
+  public static boolean UnlockThread() {
+    if (threadLock == null) return false;
+
+    threadLock.unlock();
+
+    return true;
   }
 
   private void Run() {
@@ -24,6 +47,7 @@ public class SpartanRunner {
       if (lastRun + loopFrequency < System.currentTimeMillis()) {
         lastRun = System.currentTimeMillis();
         if (actions.size() > 0) {
+          LockThread();
           actions.forEach(x -> {
 
             if (!x.hasInit) {
@@ -37,6 +61,7 @@ public class SpartanRunner {
 
           });
           actions.removeIf(x -> x.ended);
+          UnlockThread();
         }
       }
 

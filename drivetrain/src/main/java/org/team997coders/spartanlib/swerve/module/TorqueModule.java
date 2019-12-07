@@ -35,6 +35,7 @@ public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSpar
     mAzimuth = new WPI_TalonSRX(pAzimuthID);
     invertAzimuth(true);
     mDrive = new CANSparkMax(pDriveID, MotorType.kBrushless);
+    mDrive.restoreFactoryDefaults();
     mDriveEncoder = mDrive.getEncoder();
     mDriveController = mDrive.getPIDController();
 
@@ -45,7 +46,7 @@ public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSpar
     mDriveController.setP(pDriConsts.I);
     mDriveController.setP(pDriConsts.D);
 
-    mAzimuthController = new SpartanPID(pAziConsts.P, pAziConsts.I, pAziConsts.D);
+    mAzimuthController = new SpartanPID(pAziConsts);
     mAzimuthController.setMinOutput(-1);
     mAzimuthController.setMaxOutput(1);
   }
@@ -91,7 +92,7 @@ public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSpar
 
   @Override
   public void update() {
-    mAzimuthController.setSetpoint(0.0);
+    //mAzimuthController.setSetpoint(0.0);
 
     double deltaT = 0.0;
     double now = System.currentTimeMillis();

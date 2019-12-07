@@ -40,7 +40,7 @@ public class DelrinModule extends SwerveModule<SpartanPID, CANSparkMax, CANSpark
     mDriveController.setP(pDriConsts.I);
     mDriveController.setP(pDriConsts.D);
 
-    mAzimuthController = new SpartanPID(pAziConsts.P, pAziConsts.I, pAziConsts.D);
+    mAzimuthController = new SpartanPID(pAziConsts);
     mAzimuthController.setMinOutput(-1);
     mAzimuthController.setMaxOutput(1);
   }

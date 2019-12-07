@@ -84,7 +84,7 @@ public abstract class SwerveDrive extends Subsystem {
       } else {
         mModules[i].setTargetAngle(mModules[i].getTargetAngle());
       }
-      mModules[i].setTargetSpeed(smd.getSpeeds()[i]);
+      mModules[i].setTargetSpeed(smd.getSpeeds()[i] * 1);
     }
   }
 

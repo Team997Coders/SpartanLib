@@ -31,7 +31,7 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
     invertAzimuth(true);
     mDrive = new WPI_VictorSPX(pDriveID);
 
-    mAzimuthController = new SpartanPID(pAziConsts.P, pAziConsts.I, pAziConsts.D);
+    mAzimuthController = new SpartanPID(pAziConsts);
     mAzimuthController.setMinOutput(-1);
     mAzimuthController.setMaxOutput(1);
   }
