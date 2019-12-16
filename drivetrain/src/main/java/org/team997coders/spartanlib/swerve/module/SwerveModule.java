@@ -45,6 +45,7 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   // protected abstract double getAzimuthError();
   public abstract double getDriveSpeed();
   public abstract Vector2 getSpeedVector();
+  public void setDriveEncoder(double count) { }
 
   // It won't adjust on the fly if it goes past 90 degrees but it will if it passes 180
   public double getAzimuthError() {
