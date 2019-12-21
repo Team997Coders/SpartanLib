@@ -99,6 +99,7 @@ public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSpar
     double now = System.currentTimeMillis();
     if (Double.isFinite(mLastUpdate)) deltaT = (now - mLastUpdate) * 1000;
     mLastUpdate = now;
+    System.out.println("DeltaT: " + deltaT);
 
     double adjustedTheta = getAngle();
     while (adjustedTheta < mTargetAngle - 180) adjustedTheta += 360;
@@ -110,7 +111,7 @@ public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSpar
     double output = mAzimuthController.WhatShouldIDo(adjustedTheta, deltaT);
     SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
-    setDriveSpeed(getTargetSpeed() * 1);
+    setDriveSpeed(getTargetSpeed() * 0.4);
   }
 
   @Override

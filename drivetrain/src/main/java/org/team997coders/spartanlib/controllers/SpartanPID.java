@@ -29,7 +29,7 @@ public class SpartanPID {
     double error = mSetpoint - current;
 
     if (!epsilon(error, Math.copySign(error, intAccum)) && !epsilon(intAccum, 0.0)) { // Basically if it over shot the and the integral is causing it, hit the big red button
-      intAccum = 0.0;
+      //intAccum = 0.0;
     }
 
     if (Math.abs(intAccum) > intRange / 2) intAccum += error * deltaT; // Add the new stuff
@@ -43,6 +43,8 @@ public class SpartanPID {
     double p = mP * error;
     double i = mI * intAccum;
     double d = mD * derivative;
+
+    System.out.println(intAccum);
 
     return MathUtils.clamp(p + i + d, mMinOutput, mMaxOutput);
   }
