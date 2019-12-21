@@ -23,6 +23,8 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
   protected final double ENCODER_MAX = 5;
   protected double mEncoderZero;
 
+  protected double mMaxSpeed = 0.999;
+
   public int mID;
   protected double mTargetAngle = 0, mTargetSpeed = 0;
   protected double mLastError = 0, mLastOutput = 0;
@@ -110,6 +112,10 @@ public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
     while (a < min) a += (max - min);
     while (a >= max) a -= (max - min);
     return a;
+  }
+
+  public void setMaxSpeed(double maxSpeed) {
+    mMaxSpeed = maxSpeed;
   }
 
   public double getTargetAngle() { return mTargetAngle; }

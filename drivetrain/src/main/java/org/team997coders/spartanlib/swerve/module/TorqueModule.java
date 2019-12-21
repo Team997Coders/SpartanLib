@@ -111,7 +111,7 @@ public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSpar
     double output = mAzimuthController.WhatShouldIDo(adjustedTheta, deltaT);
     SmartDashboard.putNumber("[" + mID + "] Module Spin Speed", output);
     setAzimuthSpeed(output);
-    setDriveSpeed(getTargetSpeed() * 0.4);
+    setDriveSpeed(getTargetSpeed() * mMaxSpeed);
   }
 
   @Override
