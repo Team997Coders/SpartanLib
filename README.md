@@ -7,7 +7,7 @@ compileOnly dependency configuration where referencing wpi artifacts.
 
 ## Naming Standards
 
-1. All packages that provide things should be pluralized.  For example, use subsystems vs. subsystem.
+1. All packages that provide things should be pluralized.  For example, use subsystems vs. subsystem. (Lol, I didn't do that but I'm too lazy to change it)
 
 ## ToDos
 
