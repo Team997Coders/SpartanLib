@@ -5,7 +5,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Class for controller the LimeLight
+ * Class for controlling the LimeLight
  */
 public class LimeLight {
   public double x = 0, y = 0;
@@ -50,6 +50,10 @@ public class LimeLight {
     return (int) limeLightTable.getEntry(LED_MODE).getDouble(0);
   }
 
+  public void setLED(LEDState state) {
+    setLED(state);
+  }
+
   public void setLED(double a) {
     limeLightTable.getEntry(LED_MODE).setDouble(a);
   }
@@ -84,12 +88,12 @@ public class LimeLight {
     }
   }
 
-  public enum SnapshotMode implements LimeLightValue {
+  public enum CaptureMode implements LimeLightValue {
     StopTakingSnapshots(0), TakeSnapshots(1);
 
     int value;
 
-    SnapshotMode(int value) {
+    CaptureMode(int value) {
       this.value = value;
     }
 
@@ -99,7 +103,7 @@ public class LimeLight {
     }
   }
 
-  public static String
+  public static final String
     LED_MODE = "ledMode",
     CAMERA_MODE = "camMode",
     CAPTURE_MODE = "snapshot",

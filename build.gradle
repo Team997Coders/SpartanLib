@@ -5,6 +5,9 @@ plugins {
 
 def allBaseName = "spartanlib-all"
 
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
 // See https://jitpack.io/docs/BUILDING/
 group = 'com.github.team997coders'
 

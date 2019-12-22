@@ -8,6 +8,8 @@ import org.team997coders.spartanlib.subsystems.CameraMount;
  * to specified angles at rates determined by slewRate180DegreesInSec 
  * and heartbeatRateInMs.
  */
+
+@SuppressWarnings("unused")
 public class SlewCameraToAngle extends Command {
   private final CameraMount cameraMount;
   private final int panAngle;

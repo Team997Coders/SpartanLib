@@ -9,6 +9,8 @@ import org.team997coders.spartanlib.subsystems.CameraMount;
  * subsystem based on a rate factor (between -1 and 1 inclusive)
  * as a percentage of maximum.
  */
+
+@SuppressWarnings("unused")
 public class SlewCamera extends Command {
   private final CameraMount cameraMount;
   private final IJoystickValueProvider panRateProvider;
