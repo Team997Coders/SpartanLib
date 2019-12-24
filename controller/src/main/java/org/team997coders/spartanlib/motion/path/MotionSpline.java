@@ -22,19 +22,19 @@ public class MotionSpline {
 
     List<Point> points = new ArrayList<Point>();
 
-    for (double i = 0; i < 1; i += (1 / (double)steps)) {
-      double x = (Math.pow((1 - i), 3) * 3 * p0.x) + (Math.pow((1 - i), 2) * 3 * i * p1.x)
+    for (double i = 0; i < 1; i += (1 / (double) steps)) {
+      double x = (Math.pow((1 - i), 3) * p0.x) + (Math.pow((1 - i), 2) * 3 * i * p1.x)
           + ((1 - i) * 3 * i * i * p2.x) + (i * i * i * p3.x);
-      double y = (Math.pow((1 - i), 3) * 3 * p0.y) + (Math.pow((1 - i), 2) * 3 * i * p1.y)
+      double y = (Math.pow((1 - i), 3) * p0.y) + (Math.pow((1 - i), 2) * 3 * i * p1.y)
           + ((1 - i) * 3 * i * i * p2.y) + (i * i * i * p3.y);
       points.add(new Point(x, y));
-      //System.out.println("I is at: " + i);
+      System.out.println(x + ", " + y);
     }
-    double x = (Math.pow((1 - 1), 3) * 3 * p0.x) + (Math.pow((1 - 1), 2) * 3 * 1 * p1.x)
-          + ((1 - 1) * 3 * 1 * 1 * p2.x) + (1 * 1 * 1 * p3.x);
-      double y = (Math.pow((1 - 1), 3) * 3 * p0.y) + (Math.pow((1 - 1), 2) * 3 * 1 * p1.y)
-          + ((1 - 1) * 3 * 1 * 1 * p2.y) + (1 * 1 * 1 * p3.y);
-      points.add(new Point(x, y));
+    double x = (Math.pow((1 - 1), 3) * 3 * p0.x) + (Math.pow((1 - 1), 2) * 3 * 1 * p1.x) + ((1 - 1) * 3 * 1 * 1 * p2.x)
+        + (1 * 1 * 1 * p3.x);
+    double y = (Math.pow((1 - 1), 3) * 3 * p0.y) + (Math.pow((1 - 1), 2) * 3 * 1 * p1.y) + ((1 - 1) * 3 * 1 * 1 * p2.y)
+        + (1 * 1 * 1 * p3.y);
+    points.add(new Point(x, y));
 
     mPoints = new Point[points.size()];
     for (int i = 0; i < mPoints.length; i++) {
@@ -42,6 +42,8 @@ public class MotionSpline {
     }
   }
 
-  public Point[] getPoints() { return mPoints; }
+  public Point[] getPoints() {
+    return mPoints;
+  }
 
 }

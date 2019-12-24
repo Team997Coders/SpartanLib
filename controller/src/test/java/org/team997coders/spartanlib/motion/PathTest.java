@@ -8,23 +8,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.team997coders.spartanlib.motion.path.MotionSpline;
+import org.team997coders.spartanlib.motion.path.MotionPath;
 import org.team997coders.spartanlib.motion.path.Point;
 import org.team997coders.spartanlib.motion.path.Waypoint;
 
-public class SplineTest {
+public class PathTest {
 
-  //@Test
-  public void WriteOutput() {
+  @Test
+  public void PathTester() {
+    Waypoint[] waypoints = new Waypoint[] {
+      new Waypoint(new Point(30, 0), new Point(60, 0)),
+      new Waypoint(new Point(30, 30), new Point(0, 30))//,
+      //new Waypoint(new Point(50, 100), new Point(25, 75)),
+    };
 
-    Waypoint a = new Waypoint(new Point(0, 0), new Point(500, 60));
-    Waypoint b = new Waypoint(new Point(30, 0), new Point(0, 0));
-
-    MotionSpline spline = new MotionSpline(a, b);
-    spline.calulate(1000);
-    Point[] p = spline.getPoints();
-
-    //WriteShitOut(p);
+    MotionPath path = new MotionPath(waypoints);
+    path.calculate(100);
+    Point[] points = path.getPoints();
+    WriteShitOut(points);
+    assertTrue(true);
   }
 
   public void WriteShitOut(Point[] p) {
