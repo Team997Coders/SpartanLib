@@ -3,7 +3,7 @@ package org.team997coders.spartanlib.commands;
 import org.team997coders.spartanlib.helpers.threading.SpartanAction;
 import org.team997coders.spartanlib.swerve.module.SwerveModule;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class UpdateModule extends SpartanAction {
 
@@ -17,7 +17,6 @@ public class UpdateModule extends SpartanAction {
 
   public UpdateModule(SwerveModule module, Subsystem s) {
     mod = module;
-    requires(s);
   }
 
   public UpdateModule(SwerveModule module) {
@@ -43,15 +42,8 @@ public class UpdateModule extends SpartanAction {
   }
 
   @Override
-  protected void end() {
-    // module().setAzimuthSpeed(0);
-    // module().setTargetSpeed(0);
-  }
-
-  @Override
   protected void interrupt() {
     System.out.println("[" + mod.mID + "] Interrupted");
-    end();
   }
 
 }

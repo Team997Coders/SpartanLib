@@ -138,7 +138,4 @@ public class MerlinModule extends SwerveModule<SpartanPID, TalonSRX, VictorSPX> 
     return new Vector2(x, y);
   }
 
-  @Override
-  protected void initDefaultCommand() { }
-
 }

@@ -13,7 +13,6 @@ import org.team997coders.spartanlib.controllers.SpartanPID;
 import org.team997coders.spartanlib.helpers.PIDConstants;
 import org.team997coders.spartanlib.math.Vector2;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSparkMax> {
@@ -158,8 +157,5 @@ public class TorqueModule extends SwerveModule<SpartanPID, WPI_TalonSRX, CANSpar
   public void setDriveEncoder(double count) {
     mDriveEncoder.setPosition(count);
   }
-
-  @Override
-  protected void initDefaultCommand() { }
 
 }

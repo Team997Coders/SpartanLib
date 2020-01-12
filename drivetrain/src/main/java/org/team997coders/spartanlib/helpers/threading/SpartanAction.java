@@ -1,8 +1,8 @@
 package org.team997coders.spartanlib.helpers.threading;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public abstract class SpartanAction extends Command {
+public abstract class SpartanAction extends CommandBase {
 
   public boolean hasInit = false;
   public boolean ended = false;
@@ -13,22 +13,22 @@ public abstract class SpartanAction extends Command {
   protected abstract void init();
 
   @Override
-  protected void initialize() {
+  public void initialize() {
     init();
   }
 
   @Override
-  protected void execute() {
+  public void execute() {
     exec();
   }
 
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return isDone();
   }
-
+  
   @Override
-  protected void interrupted() {
+  public void end(boolean interrupted) {
     interrupt();
     ended = true;
   }

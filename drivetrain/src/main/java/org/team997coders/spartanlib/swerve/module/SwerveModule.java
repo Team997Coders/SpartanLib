@@ -3,9 +3,9 @@ package org.team997coders.spartanlib.swerve.module;
 import org.team997coders.spartanlib.math.Vector2;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public abstract class SwerveModule<AziCont, Azi, Dri> extends Subsystem {
+public abstract class SwerveModule<AziCont, Azi, Dri> implements Subsystem {
 
   public SwerveModule(int pID, int pEncoderID, double pEncoderZero) {
     this.mID = pID;
