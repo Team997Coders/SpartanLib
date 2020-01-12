@@ -3,9 +3,9 @@ package org.team997coders.spartanlib.swerve;
 import org.team997coders.spartanlib.helpers.SwerveMixerData;
 import org.team997coders.spartanlib.swerve.module.SwerveModule;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public abstract class SwerveDrive extends Subsystem {
+public abstract class SwerveDrive implements Subsystem {
 
   protected double mWheelBase, mTrackWidth;
 

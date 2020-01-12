@@ -111,7 +111,4 @@ public class HybridModule extends SwerveModule<MiniPID, WPI_TalonSRX, WPI_Victor
     return new Vector2(x, y);
   }
 
-  @Override
-  protected void initDefaultCommand() { }
-
 }
