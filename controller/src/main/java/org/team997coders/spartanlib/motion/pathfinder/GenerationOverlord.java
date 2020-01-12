@@ -2,14 +2,12 @@ package org.team997coders.spartanlib.motion.pathfinder;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
 
 public class GenerationOverlord {
 
@@ -23,6 +21,11 @@ public class GenerationOverlord {
 
   private static GenerationOverlord instance;
 
+  /**
+   * Get an instance of the GenerationOverlord.
+   * 
+   * @return managed instance of GenerationOverlord.
+   */
   public static synchronized GenerationOverlord getInstance() {
     if (instance == null) {
       instance = new GenerationOverlord();
@@ -30,17 +33,29 @@ public class GenerationOverlord {
     return instance;
   }
 
-  public GenerationOverlord() {
+  /**
+   * Sets up the GO.
+   */
+  private GenerationOverlord() {
     output = new HashMap<String, Trajectory>();
     queue = new LinkedList<TrajectoryIngredients>();
   }
 
-  public void addIngredient(TrajectoryIngredients a) {
+  /**
+   * Add a Trajectory to be processed by the Daemons.
+   * This is a concurrent method.
+   * 
+   * @param ingredient Trajectory info to add to the queue.
+   */
+  public void addIngredient(TrajectoryIngredients ingredient) {
     QUEUE_LOCK.lock();
-    queue.add(a);
+    queue.add(ingredient);
     QUEUE_LOCK.unlock();
   }
 
+  /**
+   * Let the Daemons loose to process all your data.
+   */
   public void summonDaemons() {
     daemons = new Thread[DAEMON_COUNT];
     for (int i = 0; i < daemons.length; i++) {
@@ -83,12 +98,26 @@ public class GenerationOverlord {
     return;
   }
 
+  /**
+   * Log data as processed and allow it to be collected.
+   * This is a concurrent method.
+   * 
+   * @param name Name of the trajectory.
+   * @param output Processed trajectory data.
+   */
   private void addOutput(String name, Trajectory output) {
     OUTPUT_LOCK.lock();
     this.output.put(name, output);
     OUTPUT_LOCK.unlock();
   }
 
+  /**
+   * Get processed data via a name.
+   * This is a concurrent method.
+   * 
+   * @param name Name of your data.
+   * @return Your data.
+   */
   public Trajectory getOutput(String name) {
     Trajectory a = null;
     OUTPUT_LOCK.lock();
@@ -99,6 +128,9 @@ public class GenerationOverlord {
     return a;
   }
 
+  /**
+   * Stop the Daemons from processing anymore.
+   */
   public void killDaemons() {
     for (int i = 0; i < daemons.length; i++) {
       daemons[i].interrupt();
