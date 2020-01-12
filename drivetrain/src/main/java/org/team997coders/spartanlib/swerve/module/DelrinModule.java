@@ -146,7 +146,4 @@ public class DelrinModule extends SwerveModule<SpartanPID, CANSparkMax, CANSpark
     return new Vector2(x, y);
   }
 
-  @Override
-  protected void initDefaultCommand() { }
-
 }
