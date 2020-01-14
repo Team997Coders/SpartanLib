@@ -16,7 +16,7 @@ dependencies {
     testCompile wpi.deps.wpilib()
     testCompile 'junit:junit:4.12'
     // implementation files("../build/libs/drivetrain.jar")
-    implementation files('libs/Pathfinder-Java.jar')
+    compile files('libs/Pathfinder-Java.jar')
 }
 
 test {
