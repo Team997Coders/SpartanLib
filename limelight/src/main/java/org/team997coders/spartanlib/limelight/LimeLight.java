@@ -51,7 +51,7 @@ public class LimeLight {
   }
 
   public void setLED(LEDState state) {
-    setLED(state);
+    setLED((double)state.value);
   }
 
   public void setLED(double a) {
