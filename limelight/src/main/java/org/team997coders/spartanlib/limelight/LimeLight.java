@@ -1,5 +1,8 @@
 package org.team997coders.spartanlib.limelight;
 
+import org.team997coders.spartanlib.controllers.SpartanPID;
+import org.team997coders.spartanlib.helpers.PIDConstants;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -7,16 +10,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Class for controlling the LimeLight
  */
-public class LimeLight {
+public class Limelight {
+
+  public SpartanPID mController;
   public double x = 0, y = 0;
   public boolean hasTarget = false;
   public boolean lightOn = false;
 
   private NetworkTable limeLightTable;
 
-  public LimeLight() {
+  private Limelight() {
     limeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
-
+    mController = new SpartanPID(new PIDConstants(0, 0, 0));
     setDouble(LED_MODE, LEDState.ForceOff);
   }
 
@@ -32,6 +37,10 @@ public class LimeLight {
     return limeLightTable.getEntry(entry).getDouble(defaultValue);
   }
 
+  public double getPIDOutput(double deltaT) {
+    return mController.WhatShouldIDo(getDouble(Limelight.TARGET_X, 0.0), deltaT);
+  }
+
   public interface LimeLightValue {
     public int getValue();
   }
@@ -41,9 +50,9 @@ public class LimeLight {
     y = limeLightTable.getEntry(TARGET_Y).getDouble(0);
     hasTarget = limeLightTable.getEntry(TARGET_VISIBLE).getDouble(0) == 1 ? true : false;
 
-    SmartDashboard.putBoolean("Is Valid", hasTarget);
-    SmartDashboard.putNumber("Target X", x);
-    SmartDashboard.putNumber("Target Y", y);
+    SmartDashboard.putBoolean("Limelight/Is Valid", hasTarget);
+    SmartDashboard.putNumber("Limelight/Target X", x);
+    SmartDashboard.putNumber("Limelight/Target Y", y);
   }
 
   public int getLED() {
@@ -112,5 +121,8 @@ public class LimeLight {
     TARGET_Y = "ty",
     TARGET_AREA = "ta",
     TARGET_VISIBLE = "tv";
+
+  private static Limelight instance;
+  public static Limelight getInstance() { if (instance == null) instance = new Limelight(); return instance; }
 
 }
