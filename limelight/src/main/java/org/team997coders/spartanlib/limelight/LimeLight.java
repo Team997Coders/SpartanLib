@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Class for controlling the LimeLight
  */
-public class Limelight {
+public class LimeLight {
 
   public SpartanPID mController;
   public double x = 0, y = 0;
@@ -19,7 +19,7 @@ public class Limelight {
 
   private NetworkTable limeLightTable;
 
-  private Limelight() {
+  private LimeLight() {
     limeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
     mController = new SpartanPID(new PIDConstants(0, 0, 0));
     setDouble(LED_MODE, LEDState.ForceOff);
@@ -122,7 +122,7 @@ public class Limelight {
     TARGET_AREA = "ta",
     TARGET_VISIBLE = "tv";
 
-  private static Limelight instance;
-  public static Limelight getInstance() { if (instance == null) instance = new Limelight(); return instance; }
+  private static LimeLight instance;
+  public static LimeLight getInstance() { if (instance == null) instance = new LimeLight(); return instance; }
 
 }
