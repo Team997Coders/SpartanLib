@@ -8,7 +8,7 @@ public class TrajectoryIngredients {
   public Waypoint[] points;
   public Trajectory.Config config;
 
-  public TrajectoryIngredients(String name, Waypoint[] points, Trajectory.Config config) {
+  public TrajectoryIngredients(String name, Trajectory.Config config, Waypoint... points) {
     this.name = name;
     this.points = points;
     this.config = config;

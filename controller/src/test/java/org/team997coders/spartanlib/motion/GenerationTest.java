@@ -26,10 +26,10 @@ public class GenerationTest {
     Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,
         0.05, 1.7, 2.0, 60.0);
 
-    TrajectoryIngredients t0 = new TrajectoryIngredients("t0", points0, config);
-    TrajectoryIngredients t1 = new TrajectoryIngredients("t1", points1, config);
-    TrajectoryIngredients t2 = new TrajectoryIngredients("t2", points2, config);
-    TrajectoryIngredients t3 = new TrajectoryIngredients("t3", points3, config);
+    TrajectoryIngredients t0 = new TrajectoryIngredients("t0", config, points0);
+    TrajectoryIngredients t1 = new TrajectoryIngredients("t1", config, points1);
+    TrajectoryIngredients t2 = new TrajectoryIngredients("t2", config, points2);
+    TrajectoryIngredients t3 = new TrajectoryIngredients("t3", config, points3);
 
     GenerationOverlord.getInstance().addIngredient(t0);
     GenerationOverlord.getInstance().addIngredient(t1);
