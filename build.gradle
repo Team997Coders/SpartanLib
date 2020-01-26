@@ -62,7 +62,3 @@ install {
     }
   }
 }
-
-dependencies {
-  compile files('build/libs/spartanlib-all.jar')
-}
