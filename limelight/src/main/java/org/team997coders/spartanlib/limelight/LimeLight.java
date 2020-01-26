@@ -38,7 +38,7 @@ public class LimeLight {
   }
 
   public double getPIDOutput(double deltaT) {
-    return mController.WhatShouldIDo(getDouble(Limelight.TARGET_X, 0.0), deltaT);
+    return mController.WhatShouldIDo(getDouble(LimeLight.TARGET_X, 0.0), deltaT);
   }
 
   public interface LimeLightValue {

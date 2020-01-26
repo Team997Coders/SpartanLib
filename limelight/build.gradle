@@ -16,5 +16,5 @@ dependencies {
     testCompile wpi.deps.wpilib()
     testCompile 'junit:junit:4.12'
 
-    compile files('../build/libs/spartanlib-all.jar')
+    implementation files('../build/libs/spartanlib-all.jar')
 }
