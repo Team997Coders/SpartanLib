@@ -24,6 +24,7 @@ pluginManagement {
     }
 }
 
+include 'core'
 include 'cameramount'
 include 'drivetrain'
 include 'controller'
