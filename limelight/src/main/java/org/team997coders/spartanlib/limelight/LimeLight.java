@@ -1,5 +1,8 @@
 package org.team997coders.spartanlib.limelight;
 
+import org.team997coders.spartanlib.controllers.SpartanPID;
+import org.team997coders.spartanlib.helpers.PIDConstants;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -8,28 +11,35 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Class for controlling the LimeLight
  */
 public class LimeLight {
+
+  public SpartanPID mController;
   public double x = 0, y = 0;
   public boolean hasTarget = false;
   public boolean lightOn = false;
 
-  private NetworkTable limeLightTable;
-
-  public LimeLight() {
-    limeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
-
+  private LimeLight() {
+    mController = new SpartanPID(new PIDConstants(0, 0, 0));
     setDouble(LED_MODE, LEDState.ForceOff);
   }
 
   public void setDouble(String entry, double value) {
-    limeLightTable.getEntry(entry).setDouble(value);
+    getTable().getEntry(entry).setDouble(value);
+  }
+
+  public NetworkTable getTable() {
+    return NetworkTableInstance.getDefault().getTable("limelight");
   }
 
   public void setDouble(String entry, LimeLightValue value) {
-    limeLightTable.getEntry(entry).setDouble(value.getValue());
+    getTable().getEntry(entry).setDouble(value.getValue());
   }
 
   public double getDouble(String entry, double defaultValue) {
-    return limeLightTable.getEntry(entry).getDouble(defaultValue);
+    return getTable().getEntry(entry).getDouble(defaultValue);
+  }
+
+  public double getPIDOutput(double deltaT) {
+    return mController.WhatShouldIDo(getDouble(LimeLight.TARGET_X, 0.0), deltaT);
   }
 
   public interface LimeLightValue {
@@ -37,25 +47,25 @@ public class LimeLight {
   }
 
   public void getDat() {
-    x = limeLightTable.getEntry(TARGET_X).getDouble(0);
-    y = limeLightTable.getEntry(TARGET_Y).getDouble(0);
-    hasTarget = limeLightTable.getEntry(TARGET_VISIBLE).getDouble(0) == 1 ? true : false;
+    x = getTable().getEntry(TARGET_X).getDouble(0);
+    y = getTable().getEntry(TARGET_Y).getDouble(0);
+    hasTarget = getTable().getEntry(TARGET_VISIBLE).getDouble(0) == 1 ? true : false;
 
-    SmartDashboard.putBoolean("Is Valid", hasTarget);
-    SmartDashboard.putNumber("Target X", x);
-    SmartDashboard.putNumber("Target Y", y);
+    SmartDashboard.putBoolean("Limelight/Is Valid", hasTarget);
+    SmartDashboard.putNumber("Limelight/Target X", x);
+    SmartDashboard.putNumber("Limelight/Target Y", y);
   }
 
   public int getLED() {
-    return (int) limeLightTable.getEntry(LED_MODE).getDouble(0);
+    return (int) getTable().getEntry(LED_MODE).getDouble(0);
   }
 
   public void setLED(LEDState state) {
-    setLED(state);
+    setLED((double)state.value);
   }
 
   public void setLED(double a) {
-    limeLightTable.getEntry(LED_MODE).setDouble(a);
+    getTable().getEntry(LED_MODE).setDouble(a);
   }
 
   public enum CameraState implements LimeLightValue {
@@ -112,5 +122,8 @@ public class LimeLight {
     TARGET_Y = "ty",
     TARGET_AREA = "ta",
     TARGET_VISIBLE = "tv";
+
+  private static LimeLight instance;
+  public static LimeLight getInstance() { if (instance == null) instance = new LimeLight(); return instance; }
 
 }
