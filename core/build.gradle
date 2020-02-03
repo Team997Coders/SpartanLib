@@ -1,6 +1,6 @@
 plugins {
     id "java-library"
-    id "edu.wpi.first.GradleRIO" version "2020.2.2"
+    id "edu.wpi.first.GradleRIO" version "2020.1.2"
 }
 
 // Maven central needed for JUnit
@@ -15,11 +15,4 @@ dependencies {
     compileOnly wpi.deps.vendor.java()
     testCompile wpi.deps.wpilib()
     testCompile 'junit:junit:4.12'
-
-    compile project(':core')
-}
-
-test {
-  minHeapSize = "128m"
-  maxHeapSize = "512m"
 }

@@ -1,4 +1,4 @@
-package org.team997coders.spartanlib.subsystems;
+package org.team997coders.spartanlib.motion.linear;
 
 public class TrapezoidalMotion {
 
@@ -94,13 +94,15 @@ public class TrapezoidalMotion {
     return (accel * timeToSlow) * t;
   }
 
-  public static double quadEquation(double a, double b, double c) {
-    double x = (-b + Math.sqrt((b * b) + (-4 * a * c))) / (2 * a);
-    return x;
-  }
-
   public double getAccelTime() { return timeToSlow; }
 
   public double getCruiseTime() { return timeToCruise; }
+
+  public double getTravelTime() { return (timeToSlow * 2) + timeToCruise; }
+
+  private static double quadEquation(double a, double b, double c) {
+    double x = (-b + Math.sqrt((b * b) + (-4 * a * c))) / (2 * a);
+    return x;
+  }
 
 }
