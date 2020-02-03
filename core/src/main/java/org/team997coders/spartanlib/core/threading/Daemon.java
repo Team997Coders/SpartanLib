@@ -12,7 +12,7 @@ public class Daemon {
    */
   public Daemon(Runnable exec) {
     mExec = exec;
-    mThread = new Thread(exec);
+    mThread = new Thread(mExec);
   }
 
   public void start() {
