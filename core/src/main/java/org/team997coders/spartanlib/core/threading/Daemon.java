@@ -10,9 +10,10 @@ public class Daemon {
    * 
    * @param exec What to do every update
    */
-  public Daemon(Runnable exec) {
+  public Daemon(String name, Runnable exec) {
     mExec = exec;
     mThread = new Thread(mExec);
+    mThread.setName(name);
   }
 
   public void start() {

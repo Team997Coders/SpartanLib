@@ -28,7 +28,8 @@ public class PathManager {
 
   public void startDaemons() {
     for (int i = 0; i < mDaemons.length; i++) {
-      mDaemons[i] = new Daemon(() -> processData());
+      mDaemons[i] = new Daemon("Daemon [" + i + "]", () -> processData());
+      mDaemons[i].start();
     }
   }
 
