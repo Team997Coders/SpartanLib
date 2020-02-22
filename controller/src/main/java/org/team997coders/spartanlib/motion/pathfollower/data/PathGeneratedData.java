@@ -1,4 +1,4 @@
-package org.team997coders.spartanlib.motion.pathfollower;
+package org.team997coders.spartanlib.motion.pathfollower.data;
 
 import java.util.Arrays;
 import java.util.List;
